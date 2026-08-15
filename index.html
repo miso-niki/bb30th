@@ -152,6 +152,97 @@ html { scroll-behavior: smooth; }
   [data-r="stickybar"] { display:none; }
   [data-r="stickybar"].on { display:block; }
 
+  /* ============================================================
+     ファーストビューの演出
+     「30年が積み上がって、2027に到達する」
+
+     30 → 積層 → 2027 → コピー → CTA の順に出す。
+     尺は PC 約2.9秒 / スマホ 約2.0秒。時刻はすべて変数で持ち、
+     画面幅で差し替える。原本のインライン animation は打ち消す。
+     ============================================================ */
+  [data-r="hero"]{
+    --d-top:.32s;   /* 上端の帯       */
+    --d-num:.45s;   /* 大きな30       */
+    --d-kick:.62s;  /* ANNIVERSARY…  */
+    --d-tag:1.66s;  /* 2027           */
+    --d-h1:1.90s;   /* 大同窓会       */
+    --d-sub:2.05s;  /* ありがとうを。 */
+    --d-meta:2.20s; /* 日時・会場     */
+    --d-cta:2.35s;  /* 出欠を回答する */
+    --d-foot:2.45s; /* 1997 / 30 LAYERS */
+    --l-start:.72s; /* 積層の開始     */
+    --l-step:.032s; /* 1本ごとのずれ  */
+  }
+
+  @keyframes bbFadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+  /* 下から現れて、わずかに大きい状態から定位置へ収まる */
+  @keyframes bbNumRise {
+    from{ clip-path:inset(100% -40% -40% -40%); transform:translateY(14px) scale(1.05) }
+    to  { clip-path:inset(0% -40% -40% -40%);   transform:none }
+  }
+  @keyframes bbLineIn { from{transform:scaleX(0);opacity:0} to{transform:scaleX(1);opacity:1} }
+  /* 到達した数本だけ、伸びきったあとに一度だけ軽く沈めて戻す */
+  @keyframes bbLineAccent {
+    0%{transform:scaleX(0);opacity:0}
+    58%{transform:scaleX(1);opacity:1}
+    74%{opacity:.45}
+    100%{transform:scaleX(1);opacity:1}
+  }
+  @keyframes bbTickIn { from{opacity:0} to{opacity:1} }
+  @keyframes bbTagIn {
+    0%{opacity:0;transform:translateY(6px)}
+    55%{opacity:1;transform:none}
+    72%{opacity:.45}
+    100%{opacity:1;transform:none}
+  }
+
+  /* 「30」は clip-path で下から出す。ラッパーを足して overflow:hidden する案は
+     box-sizing とフレックス整列に干渉して崩れたため、要素自身をクリップする。
+     左右と下は負の inset で外側に広げ、line-height:.78 ではみ出す字形を欠けさせない。 */
+  [data-r="mvnum"]{ animation:bbNumRise .85s cubic-bezier(.22,.61,.36,1) var(--d-num) both; }
+
+  /* 原本は左カラムを丸ごと1回でフェードさせている。子ごとに出したいので解除 */
+  [data-r="mvleft"]{ animation:none !important; }
+  [data-r="mvtop"]{ animation:bbFadeUp .55s ease var(--d-top) both !important; }
+  [data-r="mvkicker"]{ animation:bbFadeUp .5s ease var(--d-kick) both; }
+  [data-r="mvcopy"]{ animation:bbFadeUp .6s cubic-bezier(.22,.61,.36,1) var(--d-h1) both; }
+  [data-r="mvleft"] > div:nth-child(3){ animation:bbFadeUp .6s cubic-bezier(.22,.61,.36,1) var(--d-sub) both; }
+  [data-r="mvmeta"]{ animation:bbFadeUp .55s ease var(--d-meta) both; }
+  [data-r="herocta"]{ animation:bbFadeUp .55s ease var(--d-cta) both; }
+  [data-r="mvstacktop"]{ animation:bbTagIn .7s ease var(--d-tag) both !important; }
+  [data-r="mvstackfoot"]{ animation:bbFadeUp .5s ease var(--d-foot) both !important; }
+
+  /* 積層30本。1997（下）から2027（上）へ順に立ち上がる */
+  [data-line] .bb-line{
+    animation:bbLineIn .5s cubic-bezier(.22,.61,.36,1)
+              calc(var(--l-start) + var(--i) * var(--l-step)) both;
+  }
+  [data-line].is-accent .bb-line{
+    animation-name:bbLineAccent;
+    animation-duration:.72s;
+  }
+  [data-line] .bb-tick{
+    animation:bbTickIn .45s ease
+              calc(var(--l-start) + var(--i) * var(--l-step) + .26s) both;
+  }
+
+  @media (max-width:760px){
+    /* スマホは短く。CTAまで約2秒 */
+    [data-r="hero"]{
+      --d-top:.18s; --d-num:.26s; --d-kick:.38s;
+      --d-tag:1.02s; --d-h1:1.14s; --d-sub:1.26s;
+      --d-meta:1.36s; --d-cta:1.44s; --d-foot:1.50s;
+      --l-start:.44s; --l-step:.019s;
+    }
+    [data-line] .bb-line{ animation-duration:.38s; }
+    [data-line].is-accent .bb-line{ animation-duration:.56s; }
+  }
+
+  /* 動きを控える設定なら、待たせず完成形をそのまま出す */
+  @media (prefers-reduced-motion: reduce){
+    [data-r="hero"] *, [data-r="hero"]{ animation:none !important; transform:none !important; opacity:1 !important; }
+  }
+
   /* iOS Safari の自動文字拡大を止める。これが効くと想定より大きな字で組まれ、
      1行に収まるはずの見出しが途中で折れる。PCの表示には影響しない。 */
   html { -webkit-text-size-adjust:100%; text-size-adjust:100%; }
@@ -306,36 +397,36 @@ html { scroll-behavior: smooth; }
             <div style="font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(11px,1vw,14px);letter-spacing:.3em;color:#C8102E">2027</div>
           </div>
           <div data-r="mvlayers" style="height:clamp(180px,31vh,344px);display:flex;flex-direction:column-reverse;justify-content:space-between">
-            <div data-line="0"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:100.00%;height:2px;background:rgb(17,17,20);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 0.50s both"></div></div></div>
-        <div data-line="1"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:80.09%;height:1px;background:rgb(25,25,27);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 0.55s both"></div></div></div>
-        <div data-line="2"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:72.72%;height:1px;background:rgb(33,32,34);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 0.59s both"></div></div></div>
-        <div data-line="3"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:67.20%;height:1px;background:rgb(40,40,42);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 0.64s both"></div><div style="position:absolute;bottom:-5px;right:calc(67.20% + 14px);font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(8px,0.72vw,11px);letter-spacing:0.26em;line-height:1;white-space:nowrap;color:#A8A29A;animation:mvTick .8s 1.14s both">2000</div></div></div>
-        <div data-line="4"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:62.61%;height:1px;background:rgb(48,47,49);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 0.68s both"></div></div></div>
-        <div data-line="5"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:58.62%;height:1px;background:rgb(56,55,56);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 0.72s both"></div></div></div>
-        <div data-line="6"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:55.05%;height:1px;background:rgb(63,62,63);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 0.77s both"></div></div></div>
-        <div data-line="7"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:51.78%;height:1px;background:rgb(71,70,70);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 0.81s both"></div></div></div>
-        <div data-line="8"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:48.77%;height:1px;background:rgb(78,77,77);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 0.86s both"></div><div style="position:absolute;bottom:-5px;right:calc(48.77% + 14px);font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(8px,0.72vw,11px);letter-spacing:0.26em;line-height:1;white-space:nowrap;color:#A8A29A;animation:mvTick .8s 1.36s both">2005</div></div></div>
-        <div data-line="9"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:45.95%;height:1px;background:rgb(86,84,84);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 0.91s both"></div></div></div>
-        <div data-line="10"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:43.30%;height:1px;background:rgb(93,91,90);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 0.95s both"></div></div></div>
-        <div data-line="11"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:40.79%;height:1px;background:rgb(100,98,97);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 0.99s both"></div></div></div>
-        <div data-line="12"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:38.40%;height:1px;background:rgb(107,106,104);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.04s both"></div></div></div>
-        <div data-line="13"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:36.11%;height:1px;background:rgb(115,113,111);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.08s both"></div><div style="position:absolute;bottom:-5px;right:calc(36.11% + 14px);font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(8px,0.72vw,11px);letter-spacing:0.26em;line-height:1;white-space:nowrap;color:#A8A29A;animation:mvTick .8s 1.58s both">2010</div></div></div>
-        <div data-line="14"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:33.93%;height:1px;background:rgb(122,120,117);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.13s both"></div></div></div>
-        <div data-line="15"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:31.82%;height:1px;background:rgb(129,126,124);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.17s both"></div></div></div>
-        <div data-line="16"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:29.79%;height:1px;background:rgb(136,133,130);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.22s both"></div></div></div>
-        <div data-line="17"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:27.83%;height:1px;background:rgb(143,140,137);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.27s both"></div></div></div>
-        <div data-line="18"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:25.93%;height:1px;background:rgb(149,147,143);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.31s both"></div><div style="position:absolute;bottom:-5px;right:calc(25.93% + 14px);font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(8px,0.72vw,11px);letter-spacing:0.26em;line-height:1;white-space:nowrap;color:#A8A29A;animation:mvTick .8s 1.81s both">2015</div></div></div>
-        <div data-line="19"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:24.09%;height:1px;background:rgb(156,153,149);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.35s both"></div></div></div>
-        <div data-line="20"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:22.30%;height:1px;background:rgb(163,160,155);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.40s both"></div></div></div>
-        <div data-line="21"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:20.55%;height:1px;background:rgb(169,166,161);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.44s both"></div></div></div>
-        <div data-line="22"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:18.86%;height:1px;background:rgb(176,172,167);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.49s both"></div></div></div>
-        <div data-line="23"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:17.20%;height:1px;background:rgb(182,178,173);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.53s both"></div><div style="position:absolute;bottom:-5px;right:calc(17.20% + 14px);font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(8px,0.72vw,11px);letter-spacing:0.26em;line-height:1;white-space:nowrap;color:#A8A29A;animation:mvTick .8s 2.04s both">2020</div></div></div>
-        <div data-line="24"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:15.58%;height:1px;background:rgb(188,184,179);transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.58s both"></div></div></div>
-        <div data-line="25"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:14.00%;height:1px;background:#C8102E;transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.62s both"></div></div></div>
-        <div data-line="26"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:12.46%;height:1px;background:#C8102E;transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.67s both"></div></div></div>
-        <div data-line="27"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:10.94%;height:1px;background:#C8102E;transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.71s both"></div></div></div>
-        <div data-line="28"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:9.46%;height:1px;background:#C8102E;transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.76s both"></div><div style="position:absolute;bottom:-5px;right:calc(9.46% + 14px);font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(8px,0.72vw,11px);letter-spacing:0.26em;line-height:1;white-space:nowrap;color:#A8A29A;animation:mvTick .8s 2.26s both">2025</div></div></div>
-        <div data-line="29"><div style="position:relative;height:2px"><div style="position:absolute;right:0;bottom:0;width:8.00%;height:1px;background:#C8102E;transform-origin:right center;animation:mvLineInR .9s cubic-bezier(.22,.61,.36,1) 1.80s both"></div></div></div>
+            <div data-line="0" style="--i:0"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:100.00%;height:2px;background:rgb(17,17,20);transform-origin:right center"></div></div></div>
+        <div data-line="1" style="--i:1"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:80.09%;height:1px;background:rgb(25,25,27);transform-origin:right center"></div></div></div>
+        <div data-line="2" style="--i:2"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:72.72%;height:1px;background:rgb(33,32,34);transform-origin:right center"></div></div></div>
+        <div data-line="3" style="--i:3"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:67.20%;height:1px;background:rgb(40,40,42);transform-origin:right center"></div><div class="bb-tick" style="position:absolute;bottom:-5px;right:calc(67.20% + 14px);font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(8px,0.72vw,11px);letter-spacing:0.26em;line-height:1;white-space:nowrap;color:#A8A29A">2000</div></div></div>
+        <div data-line="4" style="--i:4"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:62.61%;height:1px;background:rgb(48,47,49);transform-origin:right center"></div></div></div>
+        <div data-line="5" style="--i:5"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:58.62%;height:1px;background:rgb(56,55,56);transform-origin:right center"></div></div></div>
+        <div data-line="6" style="--i:6"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:55.05%;height:1px;background:rgb(63,62,63);transform-origin:right center"></div></div></div>
+        <div data-line="7" style="--i:7"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:51.78%;height:1px;background:rgb(71,70,70);transform-origin:right center"></div></div></div>
+        <div data-line="8" style="--i:8"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:48.77%;height:1px;background:rgb(78,77,77);transform-origin:right center"></div><div class="bb-tick" style="position:absolute;bottom:-5px;right:calc(48.77% + 14px);font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(8px,0.72vw,11px);letter-spacing:0.26em;line-height:1;white-space:nowrap;color:#A8A29A">2005</div></div></div>
+        <div data-line="9" style="--i:9"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:45.95%;height:1px;background:rgb(86,84,84);transform-origin:right center"></div></div></div>
+        <div data-line="10" style="--i:10"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:43.30%;height:1px;background:rgb(93,91,90);transform-origin:right center"></div></div></div>
+        <div data-line="11" style="--i:11"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:40.79%;height:1px;background:rgb(100,98,97);transform-origin:right center"></div></div></div>
+        <div data-line="12" style="--i:12"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:38.40%;height:1px;background:rgb(107,106,104);transform-origin:right center"></div></div></div>
+        <div data-line="13" style="--i:13"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:36.11%;height:1px;background:rgb(115,113,111);transform-origin:right center"></div><div class="bb-tick" style="position:absolute;bottom:-5px;right:calc(36.11% + 14px);font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(8px,0.72vw,11px);letter-spacing:0.26em;line-height:1;white-space:nowrap;color:#A8A29A">2010</div></div></div>
+        <div data-line="14" style="--i:14"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:33.93%;height:1px;background:rgb(122,120,117);transform-origin:right center"></div></div></div>
+        <div data-line="15" style="--i:15"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:31.82%;height:1px;background:rgb(129,126,124);transform-origin:right center"></div></div></div>
+        <div data-line="16" style="--i:16"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:29.79%;height:1px;background:rgb(136,133,130);transform-origin:right center"></div></div></div>
+        <div data-line="17" style="--i:17"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:27.83%;height:1px;background:rgb(143,140,137);transform-origin:right center"></div></div></div>
+        <div data-line="18" style="--i:18"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:25.93%;height:1px;background:rgb(149,147,143);transform-origin:right center"></div><div class="bb-tick" style="position:absolute;bottom:-5px;right:calc(25.93% + 14px);font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(8px,0.72vw,11px);letter-spacing:0.26em;line-height:1;white-space:nowrap;color:#A8A29A">2015</div></div></div>
+        <div data-line="19" style="--i:19"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:24.09%;height:1px;background:rgb(156,153,149);transform-origin:right center"></div></div></div>
+        <div data-line="20" style="--i:20"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:22.30%;height:1px;background:rgb(163,160,155);transform-origin:right center"></div></div></div>
+        <div data-line="21" style="--i:21"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:20.55%;height:1px;background:rgb(169,166,161);transform-origin:right center"></div></div></div>
+        <div data-line="22" style="--i:22"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:18.86%;height:1px;background:rgb(176,172,167);transform-origin:right center"></div></div></div>
+        <div data-line="23" style="--i:23"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:17.20%;height:1px;background:rgb(182,178,173);transform-origin:right center"></div><div class="bb-tick" style="position:absolute;bottom:-5px;right:calc(17.20% + 14px);font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(8px,0.72vw,11px);letter-spacing:0.26em;line-height:1;white-space:nowrap;color:#A8A29A">2020</div></div></div>
+        <div data-line="24" style="--i:24"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:15.58%;height:1px;background:rgb(188,184,179);transform-origin:right center"></div></div></div>
+        <div data-line="25" class="is-accent" style="--i:25"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:14.00%;height:1px;background:#C8102E;transform-origin:right center"></div></div></div>
+        <div data-line="26" class="is-accent" style="--i:26"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:12.46%;height:1px;background:#C8102E;transform-origin:right center"></div></div></div>
+        <div data-line="27" class="is-accent" style="--i:27"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:10.94%;height:1px;background:#C8102E;transform-origin:right center"></div></div></div>
+        <div data-line="28" class="is-accent" style="--i:28"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:9.46%;height:1px;background:#C8102E;transform-origin:right center"></div><div class="bb-tick" style="position:absolute;bottom:-5px;right:calc(9.46% + 14px);font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(8px,0.72vw,11px);letter-spacing:0.26em;line-height:1;white-space:nowrap;color:#A8A29A">2025</div></div></div>
+        <div data-line="29" class="is-accent" style="--i:29"><div style="position:relative;height:2px"><div class="bb-line" style="position:absolute;right:0;bottom:0;width:8.00%;height:1px;background:#C8102E;transform-origin:right center"></div></div></div>
           </div>
           <div data-r="mvstackfoot" style="display:flex;align-items:center;gap:12px;margin-top:clamp(9px,1.1vw,15px);animation:mvFadeUp 1s 1.9s both">
             <div style="font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(11px,1vw,14px);letter-spacing:.3em;color:#55524D">1997</div>
