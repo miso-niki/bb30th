@@ -165,6 +165,15 @@ html { scroll-behavior: smooth; }
     #founders [data-r="founders"] > div > div:first-child { aspect-ratio:1 / 1 !important; }
   }
 
+  /* --- ヒーローのCTA ---
+     原本は [data-cta]{width:100%} を760px以下の全CTAに一律で当てている。
+     ヒーローでは全幅の赤い帯になり、見出しと積層ビジュアルのあいだを
+     分断していた。タブレット以上と同じ「ボタン幅」に戻す。
+     （下部のスティッキーCTAとRSVPセクションは全幅のままでよい） */
+  @media (max-width:760px){
+    [data-r="herocta"] [data-cta] { width:auto !important; align-self:flex-start; }
+  }
+
 .hv-0:hover{background:#101010}
 .hv-1:hover{background:#111114}
 .hv-2:hover{background:#101010;color:#fff;border-color:#101010}
