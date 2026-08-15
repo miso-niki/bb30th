@@ -1,0 +1,11 @@
+{
+  "name": "創業30周年記念 大同窓会｜株式会社ビジネスバンク",
+  "short_name": "BB 30th",
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#C8102E",
+  "background_color": "#FAF9F7",
+  "display": "browser"
+}
