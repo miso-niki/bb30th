@@ -146,6 +146,10 @@ html { scroll-behavior: smooth; }
   [data-r="stickybar"] { display:none; }
   [data-r="stickybar"].on { display:block; }
 
+  /* iOS Safari の自動文字拡大を止める。これが効くと想定より大きな字で組まれ、
+     1行に収まるはずの見出しが途中で折れる。PCの表示には影響しない。 */
+  html { -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+
   /* --- ロゴ：余白付き透過PNGをそのまま置く。原本のCSSクロップは全て無効化 --- */
   .bb-logo { flex:none; display:flex; align-items:center; overflow:visible; height:auto; }
   .bb-logo img { position:static; width:100%; height:auto; display:block; }
@@ -206,7 +210,28 @@ html { scroll-behavior: smooth; }
           pretty では解消しなかったため balance を当てて2行を均等に割る。 */
     #ob [data-r="col"] > div:last-child div { text-wrap:balance; }
 
-    /* 5. 固定CTAがホームインジケーターに重ならないようにする */
+    /* 5. 本文の改行を整える。
+          本文はPC幅の改行位置で1行ずつ div に分けて組まれているため、
+          スマホでは「長い行＋余った短い行」が交互に出ていた。
+          段落の区切り（br だけの div）は残したまま、行の div を
+          インラインにして文章として流す。
+          あわせて word-break:auto-phrase で文節の切れ目で折る
+          （「2027年にな／んと」のような単語の分断を防ぐ）。
+          ※ auto-phrase は lang="ja" が要る。実行時にJSで付与している。 */
+    #invitation div[style*="17px/2.3"],
+    #rsvp [data-r="rsvpcol"] > div:first-child,
+    #founders div[style*="15px/2.3"],
+    #invited div[style*="15px/2.3"] { word-break:auto-phrase; }
+
+    #invitation div[style*="17px/2.3"] > div > div:not(:has(> br:only-child)),
+    #rsvp [data-r="rsvpcol"] > div:first-child > div:not(:has(> br:only-child)) { display:inline; }
+
+    /* 「青山で、会いましょう。」は1行に収まる想定だが、
+       フォント読み込み前など幅が足りない場合に「青山で、会／いましょう。」と
+       割れる。折れるとしても均等な2行になるようにしておく。 */
+    #invitation p[style*="21px"] { text-wrap:balance; }
+
+    /* 6. 固定CTAがホームインジケーターに重ならないようにする */
     [data-r="stickybar"] > div {
       padding-bottom:calc(10px + env(safe-area-inset-bottom)) !important;
     }
@@ -676,6 +701,10 @@ html { scroll-behavior: smooth; }
 
 <script>
 (function () {
+  // 日本語であることを宣言する。フォント選択と、
+  // word-break:auto-phrase の文節解析にこれが要る。
+  if (!document.documentElement.lang) document.documentElement.lang = 'ja';
+
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // スクロールで要素を出す（DCLogic の data-reveal / data-grow 相当）
