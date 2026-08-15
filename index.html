@@ -215,13 +215,12 @@ html { scroll-behavior: smooth; }
           スマホでは「長い行＋余った短い行」が交互に出ていた。
           段落の区切り（br だけの div）は残したまま、行の div を
           インラインにして文章として流す。
-          あわせて word-break:auto-phrase で文節の切れ目で折る
-          （「2027年にな／んと」のような単語の分断を防ぐ）。
-          ※ auto-phrase は lang="ja" が要る。実行時にJSで付与している。 */
-    #invitation div[style*="17px/2.3"],
-    #rsvp [data-r="rsvpcol"] > div:first-child,
-    #founders div[style*="15px/2.3"],
-    #invited div[style*="15px/2.3"] { word-break:auto-phrase; }
+          あわせて、ビルド時に <wbr> で埋め込んだ文節境界だけで折らせる。
+          keep-all だけだと収まらない語で溢れるので overflow-wrap を保険に置く。
+          （iOS Safari は word-break:auto-phrase 非対応のため、この方式にしている） */
+    /* overflow-wrap:anywhere は min-content 幅を縮めてコンテナごと痩せさせるため、
+       intrinsic サイズに影響しない break-word を使う。 */
+    section, footer { word-break:keep-all; overflow-wrap:break-word; }
 
     #invitation div[style*="17px/2.3"] > div > div:not(:has(> br:only-child)),
     #rsvp [data-r="rsvpcol"] > div:first-child > div:not(:has(> br:only-child)) { display:inline; }
@@ -286,7 +285,7 @@ html { scroll-behavior: smooth; }
           <h1 data-r="mvcopy" style="margin:clamp(14px,1.7vw,24px) 0 0;font:600 clamp(19px,2.4vw,36px)/1.5 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.16em;text-wrap:balance">創業30周年記念 大同窓会</h1>
           <div style="display:flex;align-items:center;gap:clamp(10px,1.2vw,18px);margin-top:clamp(8px,1vw,14px)">
             <div style="flex:0 0 auto;width:clamp(22px,2.6vw,38px);height:1px;background:#C8102E"></div>
-            <div data-r="mvsub" style="font:400 clamp(14px,1.3vw,19px)/1.8 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.14em;color:#55524D">30年ぶんの、ありがとうを。</div>
+            <div data-r="mvsub" style="font:400 clamp(14px,1.3vw,19px)/1.8 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.14em;color:#55524D">30年ぶんの、<wbr>ありがとうを。</div>
           </div>
           <div data-r="mvmeta" style="font:300 clamp(10px,.85vw,13px)/2.1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.16em;color:#55524D;margin-top:clamp(20px,2.4vw,34px);border-top:1px solid #DDD9D2;padding-top:clamp(14px,1.5vw,22px)">株式会社ビジネスバンク<br>2027.02.07 SUN　受付 13:30 ／ 開宴 14:00<br>AOYAMA GRAND HALL / THE AOYAMA GRAND HOTEL</div>
           <div data-r="herocta" style="display:flex;flex-direction:column;align-items:flex-start;gap:12px;margin-top:clamp(20px,2.4vw,32px)">
@@ -351,9 +350,9 @@ html { scroll-behavior: smooth; }
     </div>
     <div data-r="col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.72fr);gap:56px;align-items:start">
       <div>
-        <div style="margin:0 0 32px;font:400 17px/2.3 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.04em;text-wrap:pretty"><div><div>「日本の開業率を10%に引き上げます！」<br><br></div><div>このミッションの元に集い、ビジネスバンクで一緒に過ごした時間から<span style="letter-spacing: 0.68px;">ずいぶん月日が経ちました。&nbsp;</span></div><div><br></div><div>今もビジネスバンクで働いている人もいれば、</div><div>独立した人、別の仕事に進んだ人、遠くで暮らしている人もいます。&nbsp;</div><div><br></div><div>それぞれ今いる場所は違っていても、「ビジネスバンクで過ごした時間」は、<span style="letter-spacing: 0.68px;">みんなに共通するものだと思っています。&nbsp;</span></div><div><br></div><div>そんなビジネスバンクが、2027年になんと創業30周年を迎えます。&nbsp;</div><div>せっかくの節目なので、久しぶりにみんなで集まりたいと思いました。</div><div><br></div><div>懐かしい話をしたり、今どうしているのかを聞いたり。&nbsp;</div><div>しばらく会っていなかった人とも、また顔を合わせる日にできたら嬉しいです。</div></div></div>
+        <div style="margin:0 0 32px;font:400 17px/2.3 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.04em;text-wrap:pretty"><div><div>「日本の<wbr>開業率を<wbr>10%に<wbr>引き上げます！」<br><br></div><div>この<wbr>ミッションの<wbr>元に<wbr>集い、<wbr>ビジネスバンクで<wbr>一緒に<wbr>過ごした<wbr>時間から<span style="letter-spacing: 0.68px;">ずいぶん<wbr>月日が<wbr>経ちました。<wbr>&nbsp;</span></div><div><br></div><div>今も<wbr>ビジネスバンクで<wbr>働いている<wbr>人も<wbr>いれば、</div><div>独立した<wbr>人、<wbr>別の<wbr>仕事に<wbr>進んだ人、<wbr>遠くで<wbr>暮らしている<wbr>人もいます。<wbr>&nbsp;</div><div><br></div><div>それぞれ<wbr>今いる<wbr>場所は<wbr>違っていても、<wbr>「ビジネスバンクで<wbr>過ごした<wbr>時間」は、<span style="letter-spacing: 0.68px;">みんなに<wbr>共通する<wbr>ものだと<wbr>思っています。<wbr>&nbsp;</span></div><div><br></div><div>そんな<wbr>ビジネスバンクが、<wbr>2027年に<wbr>なんと<wbr>創業30周年を<wbr>迎えます。<wbr>&nbsp;</div><div>せっかくの<wbr>節目なので、<wbr>久しぶりに<wbr>みんなで<wbr>集まりたいと<wbr>思いました。</div><div><br></div><div>懐かしい<wbr>話を<wbr>したり、<wbr>今どうしているのかを<wbr>聞いたり。<wbr>&nbsp;</div><div>しばらく<wbr>会っていなかった<wbr>人とも、<wbr>また顔を<wbr>合わせる<wbr>日に<wbr>できたら<wbr>嬉しいです。</div></div></div>
         <div style="margin:0 0 32px;font:400 17px/2.3 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.04em;text-wrap:pretty"></div>
-        <p style="margin:0;display:inline-block;padding-bottom:14px;border-bottom:2px solid #C8102E;font:500 21px/1.95 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em">2027.2.7 日曜日<br>青山で、会いましょう。</p>
+        <p style="margin:0;display:inline-block;padding-bottom:14px;border-bottom:2px solid #C8102E;font:500 21px/1.95 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em">2027.2.7 日曜日<br>青山で、<wbr>会いましょう。</p>
         <p style="margin:36px 0 0;font:300 12px/2.1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.14em;color:#8a8a8a">Business Bank 30周年記念大同窓会<br>実行委員会　有志一同</p>
       </div>
       <div data-r="invmeta" style="display:flex;justify-content:flex-end;gap:34px;align-items:stretch;padding-left:20px">
@@ -378,7 +377,7 @@ html { scroll-behavior: smooth; }
           <div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.34em;color:#C8102E">03 ／ 30 YEARS</div>
           <h2 style="margin:18px 0 0;font:400 clamp(34px,6vw,88px)/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;letter-spacing:.01em">1997 — 2027</h2>
         </div>
-        <p style="max-width:400px;margin:0;font:400 14px/2.1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.04em;color:#454545">ビジネスバンクが始まってから30年。<br>オフィスも、事業も、人も少しずつ入れ替わってきました。<br>あなたがいたのは、どの頃ですか。</p>
+        <p style="max-width:400px;margin:0;font:400 14px/2.1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.04em;color:#454545">ビジネスバンクが<wbr>始まってから<wbr>30年。<br>オフィスも、<wbr>事業も、<wbr>人も<wbr>少し<wbr>ずつ<wbr>入れ替わってきました。<br>あなたが<wbr>いたのは、<wbr>どの<wbr>頃ですか。</p>
       </div>
 
       <div data-r="timeline" style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));column-gap:20px;row-gap:0">
@@ -386,11 +385,11 @@ html { scroll-behavior: smooth; }
         <div data-r="decades" style="grid-column:1 / -1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:20px;padding-bottom:34px">
           <div style="display:flex;flex-direction:column;gap:12px">
             <span style="font:400 13px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;letter-spacing:.26em;color:#a5a5a5">FIRST DECADE</span>
-            <span style="font:400 15px/1.7 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.08em;color:#454545">はじまりの10年</span>
+            <span style="font:400 15px/1.7 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.08em;color:#454545">はじまりの<wbr>10年</span>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px">
             <span style="font:400 13px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;letter-spacing:.26em;color:#a5a5a5">SECOND DECADE</span>
-            <span style="font:400 15px/1.7 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.08em;color:#454545">人が増えた10年</span>
+            <span style="font:400 15px/1.7 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.08em;color:#454545">人が<wbr>増えた<wbr>10年</span>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px">
             <span style="font:400 13px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;letter-spacing:.26em;color:#C8102E">THIRD DECADE</span>
@@ -402,7 +401,7 @@ html { scroll-behavior: smooth; }
         <div data-r="taxis" style="grid-column:1 / -1;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));column-gap:20px">
           <div style="padding-top:16px"><div style="width:1px;height:22px;background:#C8102E;margin-bottom:14px"></div><div style="font:400 30px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:#101010">1997</div><div style="margin-top:12px;font:300 11px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.06em;color:#565656">長野県にて創業</div></div>
           <div style="padding-top:16px"><div style="width:1px;height:12px;background:rgba(16,16,16,.28);margin-bottom:14px"></div><div style="font:400 30px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:#4a4a4a">1999</div><div style="margin-top:12px;font:300 11px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.06em;color:#565656">東京にオープン<br>オフィス進出</div></div>
-          <div style="padding-top:16px"><div style="width:1px;height:12px;background:rgba(16,16,16,.28);margin-bottom:14px"></div><div style="font:400 30px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:#4a4a4a">2007</div><div style="margin-top:12px;font:300 11px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.06em;color:#565656">創業10周年<br>『戦わない経営』出版</div></div>
+          <div style="padding-top:16px"><div style="width:1px;height:12px;background:rgba(16,16,16,.28);margin-bottom:14px"></div><div style="font:400 30px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:#4a4a4a">2007</div><div style="margin-top:12px;font:300 11px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.06em;color:#565656">創業10周年<br>『戦わない<wbr>経営』出版</div></div>
           <div style="padding-top:16px"><div style="width:1px;height:12px;background:rgba(16,16,16,.28);margin-bottom:14px"></div><div style="font:400 30px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:#4a4a4a">2009</div><div style="margin-top:12px;font:300 11px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.06em;color:#565656">長期実践型インターン<br>制度スタート</div></div>
           <div style="padding-top:16px"><div style="width:1px;height:12px;background:rgba(16,16,16,.28);margin-bottom:14px"></div><div style="font:400 30px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:#4a4a4a">2010</div><div style="margin-top: 12px; font: 300 11px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif; letter-spacing: .06em; color: #565656; position: relative">初の新卒採用<br>一期生が入社</div></div>
           <div style="padding-top:16px"><div style="width:1px;height:12px;background:rgba(16,16,16,.28);margin-bottom:14px"></div><div style="font:400 30px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:#4a4a4a">2017</div><div style="margin-top:12px;font:300 11px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.06em;color:#565656">創業20周年</div></div>
@@ -414,7 +413,7 @@ html { scroll-behavior: smooth; }
             <span style="font:400 clamp(54px,7vw,96px)/.8 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:rgba(16,16,16,.14)">30</span>
             <span style="font:400 12px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.2em;color:#8a8a8a">YEARS<br>10,957 DAYS</span>
           </div>
-          <p style="grid-column:5 / span 3;margin:0;align-self:end;font:500 19px/2.1 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em;color:#101010">この30年のどこかに、<br>きっと皆さんの思い出もあるはずです。</p>
+          <p style="grid-column:5 / span 3;margin:0;align-self:end;font:500 19px/2.1 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em;color:#101010">この<wbr>30年の<wbr>どこかに、<br>きっと<wbr>皆さんの<wbr>思い出も<wbr>あるはずです。</p>
         </div>
 
       </div>
@@ -426,12 +425,12 @@ html { scroll-behavior: smooth; }
       <div data-r="col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);gap:64px;align-items:end;margin-bottom:64px">
         <div>
           <div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.34em;color:#C8102E">04 ／ FOUNDERS</div>
-          <h2 style="margin:20px 0 0;font:600 clamp(25px,3vw,40px)/1.5 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em">30年前、<br>この会社を始めた3人。</h2>
+          <h2 style="margin:20px 0 0;font:600 clamp(25px,3vw,40px)/1.5 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em">30年前、<br>この<wbr>会社を<wbr>始めた<wbr>3人。</h2>
         </div>
         <div style="margin:0;font:400 15px/2.3 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.05em;color:#454545;text-wrap:pretty">
-          <p style="margin:0 0 20px">Business Bankの創業メンバーである<br>浜口 隆則、阪東 浩二、滝澤 清隆。</p>
-          <p style="margin:0 0 20px">30周年のこの日、同窓会に集まります。</p>
-          <p style="margin:0">ぜひ一緒に30周年を祝いましょう。</p>
+          <p style="margin:0 0 20px">Business Bankの<wbr>創業メンバーである<br>浜口 隆則、<wbr>阪東 浩二、<wbr>滝澤 清隆。</p>
+          <p style="margin:0 0 20px">30周年の<wbr>この<wbr>日、<wbr>同窓会に<wbr>集まります。</p>
+          <p style="margin:0">ぜひ一緒に<wbr>30周年を<wbr>祝いましょう。</p>
         </div>
       </div>
 
@@ -466,11 +465,11 @@ html { scroll-behavior: smooth; }
       <div data-r="col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);gap:64px;align-items:end;margin-bottom:58px">
         <div>
           <div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.34em;color:#C8102E">05 ／ WHO'S INVITED</div>
-          <h2 style="margin:20px 0 0;font:600 clamp(25px,3vw,40px)/1.5 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em">Business Bankに<br>関わったことのある皆さんへ。</h2>
+          <h2 style="margin:20px 0 0;font:600 clamp(25px,3vw,40px)/1.5 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em">Business Bankに<br>関わった<wbr>ことの<wbr>ある<wbr>皆さんへ。</h2>
         </div>
         <div style="margin:0;font:400 15px/2.3 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.05em;color:#454545;text-wrap:pretty">
-          <p style="margin:0 0 20px">今働いている方はもちろん、<br>以前働いていた方、インターンとして関わっていた方も、ぜひご参加ください。</p>
-          <p style="margin:0">在籍していた時期や期間は問いません。</p>
+          <p style="margin:0 0 20px">今働いている方は<wbr>もちろん、<br>以前<wbr>働いていた方、<wbr>インターンと<wbr>して<wbr>関わっていた<wbr>方も、<wbr>ぜひご参加ください。</p>
+          <p style="margin:0">在籍していた<wbr>時期や<wbr>期間は<wbr>問いません。</p>
         </div>
       </div>
 
@@ -489,7 +488,7 @@ html { scroll-behavior: smooth; }
         </div>
       </div>
 
-      <p style="margin:58px 0 0;display:inline-block;padding-bottom:14px;border-bottom:2px solid #C8102E;font:500 clamp(18px,2vw,24px)/1.9 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em">Business Bankで過ごした時間がある方なら、<br>みんなこの30周年の仲間です。</p>
+      <p style="margin:58px 0 0;display:inline-block;padding-bottom:14px;border-bottom:2px solid #C8102E;font:500 clamp(18px,2vw,24px)/1.9 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em">Business Bankで<wbr>過ごした<wbr>時間が<wbr>ある方なら、<br>みんな<wbr>この<wbr>30周年の<wbr>仲間です。</p>
     </div>
   </section>
 
@@ -500,8 +499,8 @@ html { scroll-behavior: smooth; }
       <div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.34em;color:#C8102E">06 ／ SOMETHING SPECIAL</div>
       <div style="height:32px"></div>
       <h2 style="margin:0 0 30px;font:600 clamp(25px,3.4vw,46px)/1.7 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.08em">当日は、<br>ちょっとした<span style="color:#C8102E">お楽しみ</span>も。</h2>
-      <p style="margin:0 0 26px;max-width:540px;font:300 14px/2.4 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.08em;color:rgba(255,255,255,.78)">30周年の会なので、<br>当日はみんなで楽しめる時間をいくつか用意しています。</p>
-      <p style="margin:0;max-width:540px;font:400 15px/2.4 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em;color:rgba(255,255,255,.9)">詳しくは当日のお楽しみですが、<br>まずは久しぶりに集まれること自体を楽しんでもらえたら嬉しいです。</p>
+      <p style="margin:0 0 26px;max-width:540px;font:300 14px/2.4 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.08em;color:rgba(255,255,255,.78)">30周年の<wbr>会なので、<br>当日は<wbr>みんなで<wbr>楽しめる<wbr>時間を<wbr>いく<wbr>つか<wbr>用意しています。</p>
+      <p style="margin:0;max-width:540px;font:400 15px/2.4 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em;color:rgba(255,255,255,.9)">詳しくは<wbr>当日の<wbr>お楽しみですが、<br>まずは<wbr>久しぶりに<wbr>集まれる<wbr>こと自体を<wbr>楽しんで<wbr>もらえたら<wbr>嬉しいです。</p>
       <div style="display:flex;align-items:center;gap:16px;margin-top:48px">
         <span style="width:28px;height:1px;background:rgba(255,255,255,.28)"></span>
         <span style="font:400 11px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.3em;color:rgba(255,255,255,.6)">2027.02.07　AOYAMA</span>
@@ -519,7 +518,7 @@ html { scroll-behavior: smooth; }
           <div style="margin-top:22px;font:600 22px/1.7 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.1em">AOYAMA GRAND HALL</div>
           <div style="margin-top:8px;font:300 12px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.16em;color:#8a8a8a">THE AOYAMA GRAND HOTEL</div>
         </div>
-        <div style="margin:0;font:400 15px/2.3 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em;color:#454545;text-wrap:pretty">青山通りに面した、旧ベルコモンズ跡地。<br><p class="isSelectedEnd"><span style="letter-spacing: 0.06em; text-wrap-mode: initial;">久しぶりにみんなで集まるなら、</span><span style="letter-spacing: 0.06em; text-wrap-mode: initial;">縁がある青山の地がいいと思い、この会場を選びました。</span></p><p>30周年の一日を、青山でゆっくり楽しんでください。</p></div>
+        <div style="margin:0;font:400 15px/2.3 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em;color:#454545;text-wrap:pretty">青山通りに<wbr>面した、<wbr>旧ベルコモンズ跡地。<br><p class="isSelectedEnd"><span style="letter-spacing: 0.06em; text-wrap-mode: initial;">久しぶりに<wbr>みんなで<wbr>集まるなら、</span><span style="letter-spacing: 0.06em; text-wrap-mode: initial;">縁が<wbr>ある<wbr>青山の<wbr>地が<wbr>いいと<wbr>思い、<wbr>この<wbr>会場を<wbr>選びました。</span></p><p>30周年の<wbr>一日を、<wbr>青山で<wbr>ゆっくり楽しんでください。</p></div>
       </div>
     </div>
 
@@ -548,15 +547,15 @@ html { scroll-behavior: smooth; }
         <div>
           <div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.28em;color:#8a8a8a">ADDRESS ／ 住所</div>
           <div style="margin-top:16px;font:400 22px/1.8 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em">〒107-0061<br>東京都港区北青山2丁目14−4</div>
-          <div style="margin-top:14px;font:300 12px/2 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.08em;color:#8a8a8a">会場は館内3F AOYAMA GRAND HALL。<br>受付は 13:30 より、ホール前にてお待ちしています。</div>
-          <a data-r="mapscta" href="https://www.google.com/maps/place/AOYAMA+GRAND+HALL+%E9%9D%92%E5%B1%B1%E3%82%B0%E3%83%A9%E3%83%B3%E3%83%89%E3%83%9B%E3%83%BC%E3%83%AB/@35.6695941,139.7132318,773m/data=!3m3!1e3!4b1!5s0x60188b655e768397:0x169b750873286167!4m6!3m5!1s0x60188da824544a09:0x5dc422729ff1f2ff!8m2!3d35.6695941!4d139.7158067!16s%2Fg%2F11jdlphk_v?entry=ttu&amp;g_ep=EgoyMDI2MDgxMi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:12px;margin-top:24px;min-height:48px;padding:0 22px;border:1px solid rgba(16,16,16,.2);color:#101010;font:500 12px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.14em;transition:background .3s ease,color .3s ease,border-color .3s ease" class="hv-2">Google Mapsで見る<span style="font:400 14px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif">↗</span></a>
+          <div style="margin-top:14px;font:300 12px/2 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.08em;color:#8a8a8a">会場は<wbr>館内3F AOYAMA GRAND HALL。<br>受付は<wbr> 13:30 より、<wbr>ホール前にてお待ちしています。</div>
+          <a data-r="mapscta" href="https://www.google.com/maps/place/AOYAMA+GRAND+HALL+%E9%9D%92%E5%B1%B1%E3%82%B0%E3%83%A9%E3%83%B3%E3%83%89%E3%83%9B%E3%83%BC%E3%83%AB/@35.6695941,139.7132318,773m/data=!3m3!1e3!4b1!5s0x60188b655e768397:0x169b750873286167!4m6!3m5!1s0x60188da824544a09:0x5dc422729ff1f2ff!8m2!3d35.6695941!4d139.7158067!16s%2Fg%2F11jdlphk_v?entry=ttu&amp;g_ep=EgoyMDI2MDgxMi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:12px;margin-top:24px;min-height:48px;padding:0 22px;border:1px solid rgba(16,16,16,.2);color:#101010;font:500 12px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.14em;transition:background .3s ease,color .3s ease,border-color .3s ease" class="hv-2">Google Mapsで<wbr>見る<span style="font:400 14px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif">↗</span></a>
         </div>
         <div>
           <div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.28em;color:#8a8a8a">ACCESS ／ アクセス</div>
           <div style="margin-top:16px">
-            <div style="display:grid;grid-template-columns:1fr auto;gap:20px;align-items:baseline;padding:16px 0;border-top:1px solid rgba(16,16,16,.14)"><span style="font:400 14px/1.7 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.04em">東京メトロ銀座線「外苑前」駅</span><span style="font:400 15px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:#C8102E">徒歩 1 分</span></div>
-            <div style="display:grid;grid-template-columns:1fr auto;gap:20px;align-items:baseline;padding:16px 0;border-top:1px solid rgba(16,16,16,.14)"><span style="font:400 14px/1.7 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.04em">銀座線・半蔵門線・大江戸線「青山一丁目」駅</span><span style="font:400 15px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:#6b6b6b">徒歩 7 分</span></div>
-            <div style="display:grid;grid-template-columns:1fr auto;gap:20px;align-items:baseline;padding:16px 0;border-top:1px solid rgba(16,16,16,.14);border-bottom:1px solid rgba(16,16,16,.14)"><span style="font:400 14px/1.7 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.04em">JR中央・総武線「信濃町」駅</span><span style="font:400 15px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:#6b6b6b">徒歩 12 分</span></div>
+            <div style="display:grid;grid-template-columns:1fr auto;gap:20px;align-items:baseline;padding:16px 0;border-top:1px solid rgba(16,16,16,.14)"><span style="font:400 14px/1.7 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.04em">東京メトロ銀座線<wbr>「外苑前」<wbr>駅</span><span style="font:400 15px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:#C8102E">徒歩 1 分</span></div>
+            <div style="display:grid;grid-template-columns:1fr auto;gap:20px;align-items:baseline;padding:16px 0;border-top:1px solid rgba(16,16,16,.14)"><span style="font:400 14px/1.7 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.04em">銀座線・半蔵門線・<wbr>大江戸線<wbr>「青山一丁目」駅</span><span style="font:400 15px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:#6b6b6b">徒歩 7 分</span></div>
+            <div style="display:grid;grid-template-columns:1fr auto;gap:20px;align-items:baseline;padding:16px 0;border-top:1px solid rgba(16,16,16,.14);border-bottom:1px solid rgba(16,16,16,.14)"><span style="font:400 14px/1.7 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.04em">JR中央・総武線<wbr>「信濃町」<wbr>駅</span><span style="font:400 15px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:#6b6b6b">徒歩 12 分</span></div>
           </div>
         </div>
       </div>
@@ -568,7 +567,7 @@ html { scroll-behavior: smooth; }
       <div>
         <div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.34em;color:#C8102E">08 ／ PHOTOGRAPHS</div>
         <h2 style="margin:22px 0 26px;font:600 clamp(26px,3.4vw,46px)/1.55 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em">昔の写真<br>持っていませんか？</h2>
-        <div style="margin:0 0 30px;max-width:420px;font:300 14px/2.2 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.04em;color:rgba(255,255,255,.7)"><p class="isSelectedEnd">今回、30周年を機に、<br>ビジネスバンクにまつわる昔の写真を集めています。</p><p class="isSelectedEnd">オフィスで撮った一枚でも、社員旅行でも、飲み会でも。<br>インターン時代の写真や、何気ない仕事中の写真も大歓迎です。</p><p class="isSelectedEnd"><strong>「そういえば、こんな写真あったな」</strong></p><p class="isSelectedEnd">という一枚があれば、ぜひ送ってください。</p><p>当日、みんなで懐かしく見られたらと思っています。</p></div>
+        <div style="margin:0 0 30px;max-width:420px;font:300 14px/2.2 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.04em;color:rgba(255,255,255,.7)"><p class="isSelectedEnd">今回、<wbr>30周年を<wbr>機に、<br>ビジネスバンクに<wbr>まつわる<wbr>昔の<wbr>写真を<wbr>集めています。</p><p class="isSelectedEnd">オフィスで<wbr>撮った<wbr>一枚でも、<wbr>社員旅行でも、<wbr>飲み会でも。<br>インターン時代の<wbr>写真や、<wbr>何気ない<wbr>仕事中の<wbr>写真も<wbr>大歓迎です。</p><p class="isSelectedEnd"><strong>「そう<wbr>いえば、<wbr>こんな<wbr>写真あったな」</strong></p><p class="isSelectedEnd">と<wbr>いう<wbr>一枚が<wbr>あれば、<wbr>ぜひ<wbr>送ってください。</p><p>当日、<wbr>みんなで<wbr>懐かしく<wbr>見られたらと<wbr>思っています。</p></div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:38px">
           <span style="padding:7px 14px;border:1px solid rgba(255,255,255,.28);font:300 11px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.12em">オフィス</span>
           <span style="padding:7px 14px;border:1px solid rgba(255,255,255,.28);font:300 11px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.12em">社員旅行</span>
@@ -602,7 +601,7 @@ html { scroll-behavior: smooth; }
         <div data-r="progrow" style="display:grid;grid-template-columns:120px 1fr;gap:24px;align-items:baseline;padding:26px 0;border-top:1px solid rgba(16,16,16,.14)"><span style="font:400 26px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:#101010">17:00</span><span style="font:400 17px/1.7 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.08em;color:#101010">終宴</span></div>
         <div data-r="progrow" style="display:grid;grid-template-columns:120px 1fr;gap:24px;align-items:baseline;padding:26px 0;border-top:1px solid rgba(16,16,16,.14);border-bottom:1px solid rgba(16,16,16,.14)"><span style="font:400 26px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif;color:#101010">18:00<span style="font:400 13px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;color:#8a8a8a">頃</span></span><span style="font:400 17px/1.7 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.08em;color:#101010">二次会</span></div>
       </div>
-      <p style="margin:26px 0 0;font:300 11px/2 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.08em;color:#8a8a8a">軽食・ドリンク・アルコールは準備しています。<br>途中参加・途中退出も歓迎です。無理のない時間でお越しください。</p>
+      <p style="margin:26px 0 0;font:300 11px/2 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.08em;color:#8a8a8a">軽食・<wbr>ドリンク・アルコールは<wbr>準備しています。<br>途中参加・途中退出も<wbr>歓迎です。<wbr>無理の<wbr>ない<wbr>時間で<wbr>お越しください。</p>
     </div>
   </section>
 
@@ -614,11 +613,11 @@ html { scroll-behavior: smooth; }
         <div style="margin-top:26px;width:56px;height:1px;background:#101010"></div>
       </div>
       <div data-r="grid3" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:rgba(16,16,16,.14);border:1px solid rgba(16,16,16,.14)">
-        <div style="background:#fff;padding:28px 26px"><div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.28em;color:#8a8a8a">DATE ／ 日時</div><div style="margin-top:14px;font:400 20px/1.6 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.04em">2027年2月7日（日）</div><div style="margin-top:8px;font:300 12px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;color:#565656">受付 13:30 ／ 開宴 14:00 ／ 終宴 17:00</div></div>
+        <div style="background:#fff;padding:28px 26px"><div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.28em;color:#8a8a8a">DATE ／ 日時</div><div style="margin-top:14px;font:400 20px/1.6 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.04em">2027年2月7日<wbr>（日）</div><div style="margin-top:8px;font:300 12px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;color:#565656">受付 13:30 ／ 開宴 14:00 ／ 終宴 17:00</div></div>
         <div style="background:#fff;padding:28px 26px"><div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.28em;color:#8a8a8a">VENUE ／ 会場</div><div style="margin-top:14px;font:400 20px/1.6 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.04em">AOYAMA GRAND HALL</div><div style="margin-top:8px;font:300 12px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;color:#565656">THE AOYAMA GRAND HOTEL 3F<br>〒107-0061 東京都港区北青山2丁目14−4</div></div>
-        <div style="background:#fff;padding:28px 26px"><div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.28em;color:#8a8a8a">FEE ／ 会費</div><div style="margin-top:14px;font:400 20px/1.6 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.04em">15,000円</div><div style="margin-top:8px;font:300 12px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;color:#565656">当日、受付にてお支払いください</div></div>
-        <div style="background:#fff;padding:28px 26px"><div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.28em;color:#8a8a8a">GUESTS ／ 対象</div><div style="margin-top:14px;font:400 20px/1.6 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.04em">現社員・OB・OG</div><div style="margin-top:8px;font:300 12px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;color:#565656">インターン経験者も含みます</div></div>
-        <div style="background:#fff;padding:28px 26px"><div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.28em;color:#8a8a8a">DRESS ／ 服装</div><div style="margin-top:14px;font:400 20px/1.6 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.04em">平服</div><div style="margin-top:8px;font:300 12px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;color:#565656">久しぶりの仲間に会う日なので、<br>どうぞ気負わずお越しください。</div></div>
+        <div style="background:#fff;padding:28px 26px"><div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.28em;color:#8a8a8a">FEE ／ 会費</div><div style="margin-top:14px;font:400 20px/1.6 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.04em">15,000円</div><div style="margin-top:8px;font:300 12px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;color:#565656">当日、<wbr>受付にてお支払いください</div></div>
+        <div style="background:#fff;padding:28px 26px"><div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.28em;color:#8a8a8a">GUESTS ／ 対象</div><div style="margin-top:14px;font:400 20px/1.6 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.04em">現社員・OB・OG</div><div style="margin-top:8px;font:300 12px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;color:#565656">インターン経験者も<wbr>含みます</div></div>
+        <div style="background:#fff;padding:28px 26px"><div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.28em;color:#8a8a8a">DRESS ／ 服装</div><div style="margin-top:14px;font:400 20px/1.6 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.04em">平服</div><div style="margin-top:8px;font:300 12px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;color:#565656">久しぶりの<wbr>仲間に<wbr>会う<wbr>日なので、<br>どうぞ気負わず<wbr>お越しください。</div></div>
         <div style="background:#fff;padding:28px 26px"><div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.28em;color:#8a8a8a">ACCESS ／ アクセス</div><div style="margin-top:14px;font:400 20px/1.6 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.04em">外苑前駅 徒歩1分</div><div style="margin-top:8px;font:300 12px/1.9 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;color:#565656">東京メトロ銀座線／青山一丁目駅 徒歩7分</div></div>
       </div>
     </div>
@@ -630,10 +629,10 @@ html { scroll-behavior: smooth; }
       <div>
         <div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.34em;color:rgba(255,255,255,.8)">11 ／ RSVP</div>
         <div style="margin:26px 0 18px;font:400 clamp(32px,4.6vw,64px)/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif">2027.02.07</div>
-        <h2 style="margin:0;font:600 clamp(26px,3.6vw,50px)/1.5 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.08em">青山で会いましょう。</h2>
+        <h2 style="margin:0;font:600 clamp(26px,3.6vw,50px)/1.5 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.08em">青山で<wbr>会いましょう。</h2>
       </div>
       <div data-r="rsvpcol" style="display:flex;flex-direction:column;align-items:flex-start;gap:22px;border-left:1px solid rgba(255,255,255,.3);padding-left:56px">
-        <div style="margin:0;font:300 14px/2.2 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.06em;color:rgba(255,255,255,.85)"><div>ずいぶん久しぶりの人もいると思います。</div><div><br></div><div>あの頃の話も、今の話も、</div><div>当日はゆっくりできたらと思っています。</div><div><br></div><div>ぜひ、出欠をお知らせください。</div><div><br>参加が難しい方も、</div><div>写真やメッセージを送っていただけたら嬉しいです。</div></div>
+        <div style="margin:0;font:300 14px/2.2 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.06em;color:rgba(255,255,255,.85)"><div>ずいぶん久しぶりの<wbr>人も<wbr>いると<wbr>思います。</div><div><br></div><div>あの<wbr>頃の<wbr>話も、<wbr>今の<wbr>話も、</div><div>当日は<wbr>ゆっくり<wbr>できたらと<wbr>思っています。</div><div><br></div><div>ぜひ、<wbr>出欠を<wbr>お知らせください。</div><div><br>参加が<wbr>難しい<wbr>方も、</div><div>写真や<wbr>メッセージを<wbr>送っていただけたら<wbr>嬉しいです。</div></div>
         <a data-cta="1" href="https://docs.google.com/forms/d/e/1FAIpQLScGwlyj76GTWS9lqaoN7hakNcdwwNVRLQaj4CeWGvisdsaWrw/viewform?usp=header" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;justify-content:space-between;gap:24px;width:320px;max-width:100%;min-height:66px;transition:background .3s ease,color .3s ease;padding:0 30px;background:#fff;color:#C8102E;font:500 16px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.14em" class="hv-4">出欠を回答する<span style="font:400 18px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif">→</span></a>
         <div style="font:400 11px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.2em;color:rgba(255,255,255,.8)">申込締切　2026.12.20</div>
       </div>
@@ -645,9 +644,9 @@ html { scroll-behavior: smooth; }
       <div data-r="col" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:64px;align-items:end;margin-bottom:56px">
         <div>
           <div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.34em;color:#C8102E">12 ／ OB・OG COMPANY</div>
-          <h2 style="margin:20px 0 0;font:600 clamp(25px,3vw,40px)/1.5 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em"><div><span style="font-size: 37.14px;">ビジネスバンクを卒業して</span></div><div><span style="font-size: 37.14px;">生まれた会社、サービス</span></div></h2>
+          <h2 style="margin:20px 0 0;font:600 clamp(25px,3vw,40px)/1.5 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.06em"><div><span style="font-size: 37.14px;">ビジネスバンクを<wbr>卒業して</span></div><div><span style="font-size: 37.14px;">生まれた<wbr>会社、<wbr>サービス</span></div></h2>
         </div>
-        <div style="margin:0;font:400 14px/2.2 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.04em;color:#454545"><div>ビジネスバンクを離れたあと、自分で会社や事業を始めた人もたくさんいます。<span style="letter-spacing: 0.04em;">30周年を機に、そんなOB・OGの「今」も少し紹介できたらと思っています。</span><span style="letter-spacing: 0.04em;">昔一緒に働いていたあの人が、</span><span style="letter-spacing: 0.04em;">今は何をしているのか。</span><span style="letter-spacing: 0.04em;">そんな再会のきっかけにもなれば嬉しいです。</span></div><div><span style="letter-spacing: 0.04em;">掲載をご希望の方は、お気軽に実行委員までご連絡ください。</span></div></div>
+        <div style="margin:0;font:400 14px/2.2 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.04em;color:#454545"><div>ビジネスバンクを<wbr>離れた<wbr>あと、<wbr>自分で<wbr>会社や<wbr>事業を<wbr>始めた<wbr>人も<wbr>たくさんいます。<span style="letter-spacing: 0.04em;">30周年を<wbr>機に、<wbr>そんな<wbr>OB・OGの<wbr>「今」も<wbr>少し<wbr>紹介できたらと<wbr>思っています。</span><span style="letter-spacing: 0.04em;">昔<wbr>一緒に<wbr>働いていた<wbr>あの<wbr>人が、</span><span style="letter-spacing: 0.04em;">今は<wbr>何を<wbr>しているのか。</span><span style="letter-spacing: 0.04em;">そんな<wbr>再会の<wbr>きっかけにも<wbr>なれば<wbr>嬉しいです。</span></div><div><span style="letter-spacing: 0.04em;">掲載を<wbr>ご希望の<wbr>方は、<wbr>お気軽に<wbr>実行委員まで<wbr>ご連絡ください。</span></div></div>
       </div>
       <div data-r="grid6" style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:rgba(16,16,16,.14);border:1px solid rgba(16,16,16,.14)">
         <div style="background:#fff;height:118px;display:flex;align-items:center;justify-content:center;font:300 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.24em;color:#b5b5b5">LOGO</div>
@@ -681,7 +680,7 @@ html { scroll-behavior: smooth; }
       </div>
       <div>
         <div style="font:400 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.28em;color:rgba(255,255,255,.45)">CONTACT</div>
-        <div style="margin-top:14px;font:300 13px/2 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;color:rgba(255,255,255,.75)">ご不明な点はお気軽にメッセージください</div>
+        <div style="margin-top:14px;font:300 13px/2 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;color:rgba(255,255,255,.75)">ご不明な点は<wbr>お気軽に<wbr>メッセージください</div>
       </div>
     </div>
     <div style="max-width:1600px;margin:0 auto;padding:0 48px 100px"><div style="border-top:1px solid rgba(255,255,255,.14);padding-top:22px;font:300 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.18em;color:rgba(255,255,255,.4)">© 1997–2027 BUSINESS BANK INC.</div></div>
@@ -693,7 +692,7 @@ html { scroll-behavior: smooth; }
         <div data-r="stickytext" style="display:flex;align-items:center;gap:20px;color:#fff">
           <span style="font:400 18px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif">2027.02.07</span>
           <span style="width:24px;height:1px;background:rgba(255,255,255,.3)"></span>
-          <span style="font:400 13px/1 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.08em">30年ぶんの、ありがとうを。</span>
+          <span style="font:400 13px/1 'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',YuMincho,serif;letter-spacing:.08em">30年ぶんの、<wbr>ありがとうを。</span>
         </div>
         <a data-cta="1" href="https://docs.google.com/forms/d/e/1FAIpQLScGwlyj76GTWS9lqaoN7hakNcdwwNVRLQaj4CeWGvisdsaWrw/viewform?usp=header" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:48px;padding:0 24px;transition:background .3s ease,color .3s ease;background:#C8102E;color:#fff;font:500 13px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.12em" class="hv-5">出欠を回答する<span style="font:400 14px/1 'Bodoni Moda',Didot,'Bodoni 72',Georgia,'Times New Roman',serif">→</span></a>
       </div>
