@@ -161,7 +161,7 @@ html { scroll-behavior: smooth; }
      眠くなり、4:5枠だと正方形の原画が左右に切られて寄りすぎる。
      スマホでは 1:1 にして切らず、表示幅も原画に見合うところで止める。 */
   @media (max-width:760px){
-    #founders [data-r="founders"] > div { width:100%; max-width:300px; margin-inline:auto; }
+    #founders [data-r="founders"] > div { width:100%; max-width:270px; margin-inline:auto; }
     #founders [data-r="founders"] > div > div:first-child { aspect-ratio:1 / 1 !important; }
   }
 
@@ -172,6 +172,47 @@ html { scroll-behavior: smooth; }
      （下部のスティッキーCTAとRSVPセクションは全幅のままでよい） */
   @media (max-width:760px){
     [data-r="herocta"] [data-cta] { width:auto !important; align-self:flex-start; }
+  }
+
+  /* ============================================================
+     スマホ最終調整（760px以下のみ。PC・タブレットには一切効かない）
+     ねらい：スクロール量を減らし、小さすぎる文字を読める大きさにする。
+     デザイン・配色・文言・セクション構成は変えない。
+     ============================================================ */
+  @media (max-width:760px){
+
+    /* 1. 招待本文：行間を詰める（17px/2.30 → 15.5px/2.05） */
+    #invitation div[style*="17px/2.3"] { font-size:15.5px !important; line-height:2.05 !important; }
+
+    /* 2. セクション余白に強弱をつける。
+          読ませる・見せ場のセクション（招待/沿革/THE DAY/会場/写真/RSVP）は
+          58pxのまま。情報を並べるだけのセクションを44pxに詰める。 */
+    #programme, #details, #ob { padding-top:44px !important; padding-bottom:44px !important; }
+    #founders > div, #invited > div, footer > div { padding-top:44px !important; padding-bottom:44px !important; }
+    /* 会場だけ上余白118pxがスマホ指定から漏れていた。他と同じ58pxに揃える */
+    #venue > div:first-of-type { padding-top:58px !important; }
+
+    /* 3. 補足文が小さすぎるところを引き上げる（10〜11px → 12.5px）。
+          章ラベル（02 ／ INVITATION 等）と写真キャプションは
+          デザインの一部なので触らない。 */
+    #programme p { font-size:12.5px !important; line-height:2 !important; }
+    [data-r="herocta"] > span { font-size:12.5px !important; }
+    #years [data-r="taxis"] > div > div:last-child { font-size:12.5px !important; }
+    #rsvp [data-r="rsvpcol"] > div:last-child { font-size:12.5px !important; }
+
+    /* 4. 原本は h1,h2,p にだけ text-wrap:pretty を当てている。
+          div/span で組まれた本文は対象外で、430px幅のとき OB・OG の
+          説明文が最後の行に数文字だけ落ちていた（364px + 44px）。
+          pretty では解消しなかったため balance を当てて2行を均等に割る。 */
+    #ob [data-r="col"] > div:last-child div { text-wrap:balance; }
+
+    /* 5. 固定CTAがホームインジケーターに重ならないようにする */
+    [data-r="stickybar"] > div {
+      padding-bottom:calc(10px + env(safe-area-inset-bottom)) !important;
+    }
+    footer > div:last-child {
+      padding-bottom:calc(96px + env(safe-area-inset-bottom)) !important;
+    }
   }
 
 .hv-0:hover{background:#101010}
