@@ -155,7 +155,9 @@ html { scroll-behavior: smooth; }
   .ob-ini { width:22px; height:22px; box-sizing:border-box; display:flex;
             align-items:center; justify-content:center; border:1px solid rgba(16,16,16,.16);
             font:400 11px/1 'Shippori Mincho B1',serif; color:#8a8a8a; }
+  .ob-who { display:flex; flex-direction:column; gap:3px; min-width:0; }
   .ob-name { font:500 15px/1.6 'Noto Sans JP',sans-serif; letter-spacing:.04em; color:#101010; }
+  .ob-person { font:300 11.5px/1.5 'Noto Sans JP',sans-serif; letter-spacing:.08em; color:#8a8a8a; }
   .ob-desc { font:300 13px/1.75 'Noto Sans JP',sans-serif; letter-spacing:.03em; color:#6a6a6a; }
   .ob-url  { font:300 11px/1 'Noto Sans JP',sans-serif; letter-spacing:.1em; color:#a5a5a5;
              white-space:nowrap; transition:color .3s ease; }
@@ -180,8 +182,9 @@ html { scroll-behavior: smooth; }
   @media (max-width:760px) {
     .ob-row { grid-template-columns:20px minmax(0,1fr); gap:0 12px; padding:16px 2px; }
     .ob-ico, .ob-ini { grid-column:1; grid-row:1; width:20px; height:20px; }
-    .ob-name { grid-column:2; grid-row:1; font-size:14.5px; }
-    .ob-desc { grid-column:2; grid-row:2; margin-top:4px; font-size:12.5px; }
+    .ob-who  { grid-column:2; grid-row:1; }
+    .ob-name { font-size:14.5px; }
+    .ob-desc { grid-column:2; grid-row:2; margin-top:6px; font-size:12.5px; }
     .ob-url  { grid-column:2; grid-row:3; margin-top:7px; }
     .ob-note { padding:24px 2px; font-size:12.5px; }
   }
@@ -851,7 +854,7 @@ html { scroll-behavior: smooth; }
         <div class="ob-list" hidden></div>
         <div class="ob-note">これから<wbr>掲載していきます。<wbr>ぜひお知らせください。</div>
         <a class="ob-add" href="https://docs.google.com/forms/d/e/1FAIpQLScGwlyj76GTWS9lqaoN7hakNcdwwNVRLQaj4CeWGvisdsaWrw/viewform" target="_blank" rel="noopener noreferrer">＋ 掲載する</a>
-        <div class="ob-hint">出欠の<wbr>ご回答フォームの<wbr>中でうかが<wbr>います<wbr>（お一人<wbr>2件まで）</div>
+        <div class="ob-hint">出欠の<wbr>ご回答フォームの<wbr>中でうかが<wbr>います。<wbr>ご欠席の<wbr>方も<wbr>掲載できます<wbr>（お一人<wbr>2件まで）</div>
       </div>
 
     </section>
@@ -998,9 +1001,10 @@ html { scroll-behavior: smooth; }
           if (head[j].indexOf(keys[k]) >= 0) return j;
       return dflt;
     }
-    var iName = col(['会社', 'サービス', 'name'], 0),
-        iDesc = col(['ひとこと', '説明', 'desc'], 1),
-        iUrl  = col(['URL', 'url', 'リンク'], 2);
+    var iName   = col(['会社', 'サービス', 'name'], 0),
+        iDesc   = col(['ひとこと', '説明', 'desc'], 1),
+        iUrl    = col(['URL', 'url', 'リンク'], 2),
+        iPerson = col(['お名前', '氏名', 'person'], 3);
 
     var list = box.querySelector('.ob-list'), n = 0;
     rows.slice(1).forEach(function (r) {
@@ -1040,8 +1044,17 @@ html { scroll-behavior: smooth; }
       el.appendChild(ico);
 
       // 以降はすべて textContent で入れる（投稿された文字列をHTMLとして解釈しない）
+      // 社名の下に氏名を添える。同窓会なので「あの人が今これを」が伝わるほうがいい。
+      var who = document.createElement('span');
+      who.className = 'ob-who';
       var nm = document.createElement('span');
-      nm.className = 'ob-name'; nm.textContent = name; el.appendChild(nm);
+      nm.className = 'ob-name'; nm.textContent = name; who.appendChild(nm);
+      var person = (r[iPerson] || '').trim();
+      if (person) {
+        var pn = document.createElement('span');
+        pn.className = 'ob-person'; pn.textContent = person; who.appendChild(pn);
+      }
+      el.appendChild(who);
 
       var ds = document.createElement('span');
       ds.className = 'ob-desc'; ds.textContent = (r[iDesc] || '').trim(); el.appendChild(ds);
