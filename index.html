@@ -155,11 +155,14 @@ html { scroll-behavior: smooth; }
            左端にあるロゴの上を一瞬で通過して「線が文字を書く」感じが出ない。 */
         --ease:cubic-bezier(.55,0,.25,1);
         position:relative; display:flex; align-items:flex-end;
-        min-height:clamp(158px,13.5vw,210px); }
+        min-height:clamp(172px,14.6vw,228px); }
   .ls-base { position:absolute; left:0; right:0; bottom:0; height:2px; background:#111;
              transform-origin:left center; }
+  /* margin-bottom は罫線と「Bank」のベースラインの間隔を決める。
+     -.17em まで詰めると隙間がフォントサイズの8%しか残らず、文字が罫線に
+     乗って見える。-.04em で約20%（94pxのとき約20px）空く。 */
   .ls-type { font:700 clamp(40px,6.2vw,94px)/1.04 'Helvetica Neue',Helvetica,Arial,sans-serif;
-             letter-spacing:-.014em; color:#101010; margin:0 0 -.17em; width:100%; }
+             letter-spacing:-.014em; color:#101010; margin:0 0 -.04em; width:100%; }
   .ls-stack { position:absolute; left:39%; right:0; top:0; bottom:0; }
   .ls-stack > i { position:absolute; right:0; height:1px; display:block;
                   transform-origin:right center; }
