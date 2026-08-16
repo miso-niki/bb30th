@@ -141,26 +141,35 @@ html { scroll-behavior: smooth; }
 
   /* --- OB・OG COMPANY の一覧 --- */
   /* ロゴを並べると大きさも余白もばらつくが、ファビコンを22pxに揃えて置くと
-     縮小方向なので粒が立ち、行の頭も自然に揃う。 */
+     縮小方向なので粒が立ち、行の頭も自然に揃う。
+     1行=1社を横いっぱいに伸ばすと、社名から説明・URLまでの目線が遠く、
+     件数が少ないうちは空白ばかりになる。1社を縦にまとめて2列に並べる。 */
   #oblist { --ob-line: 1px solid rgba(16,16,16,.14); }
-  .ob-list { border-top: var(--ob-line); }
+  .ob-list { display:grid; grid-template-columns:minmax(0,1fr); }
   .ob-list[hidden] { display:none; }
-  .ob-row { display:grid; grid-template-columns:22px minmax(0,1.05fr) minmax(0,1.2fr) auto;
-            gap:22px; align-items:center; padding:19px 4px;
-            border-bottom: var(--ob-line);
+  .ob-row { display:grid; grid-template-columns:22px minmax(0,1fr);
+            column-gap:14px; row-gap:5px; align-content:start;
+            padding:18px 2px; border-bottom: var(--ob-line);
             color:inherit; text-decoration:none; transition:background .3s ease; }
+  .ob-row:first-child { border-top: var(--ob-line); }
   a.ob-row:hover { background:rgba(16,16,16,.028); }
-  .ob-ico { width:22px; height:22px; display:flex; align-items:center; justify-content:center; }
+  .ob-ico, .ob-ini { grid-column:1; grid-row:1; width:22px; height:22px;
+                     display:flex; align-items:center; justify-content:center; }
   .ob-ico img { width:100%; height:100%; object-fit:contain; display:block; }
-  .ob-ini { width:22px; height:22px; box-sizing:border-box; display:flex;
-            align-items:center; justify-content:center; border:1px solid rgba(16,16,16,.16);
+  .ob-ini { box-sizing:border-box; border:1px solid rgba(16,16,16,.16);
             font:400 11px/1 'Shippori Mincho B1',serif; color:#8a8a8a; }
-  .ob-who { display:flex; flex-direction:column; gap:3px; min-width:0; }
+  /* 社名と氏名は同じ行に流す。1行ぶん詰まるし、「あの会社＝あの人」が一目で結びつく。
+     長いときだけ折り返る。 */
+  .ob-who { grid-column:2; grid-row:1; display:flex; align-items:baseline;
+            flex-wrap:wrap; gap:2px 12px; min-width:0; }
   .ob-name { font:500 15px/1.6 'Noto Sans JP',sans-serif; letter-spacing:.04em; color:#101010; }
-  .ob-person { font:300 11.5px/1.5 'Noto Sans JP',sans-serif; letter-spacing:.08em; color:#8a8a8a; }
-  .ob-desc { font:300 13px/1.75 'Noto Sans JP',sans-serif; letter-spacing:.03em; color:#6a6a6a; }
-  .ob-url  { font:300 11px/1 'Noto Sans JP',sans-serif; letter-spacing:.1em; color:#a5a5a5;
-             white-space:nowrap; transition:color .3s ease; }
+  .ob-person { font:300 11.5px/1.6 'Noto Sans JP',sans-serif; letter-spacing:.08em; color:#8a8a8a; }
+  .ob-desc { grid-column:2; grid-row:2; font:300 13px/1.75 'Noto Sans JP',sans-serif;
+             letter-spacing:.03em; color:#6a6a6a; }
+  .ob-url  { grid-column:2; grid-row:3; margin-top:3px;
+             font:300 11px/1 'Noto Sans JP',sans-serif; letter-spacing:.1em; color:#a5a5a5;
+             white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+             transition:color .3s ease; }
   a.ob-row:hover .ob-url { color:#C8102E; }
   .ob-note { padding:30px 4px; border-top: var(--ob-line); border-bottom: var(--ob-line);
              font:300 13px/1.9 'Noto Sans JP',sans-serif; letter-spacing:.06em; color:#8a8a8a; }
@@ -170,22 +179,19 @@ html { scroll-behavior: smooth; }
   .ob-add:hover { border-bottom-color:#C8102E; }
   .ob-hint { margin-top:14px; font:300 11px/1.9 'Noto Sans JP',sans-serif;
              letter-spacing:.08em; color:#a5a5a5; }
-  /* 行ごとに別のグリッドにすると、右端のURL列が「その行のドメインの長さ」で
-     決まるので、列の位置が行ごとにずれる（実測で最大50px）。subgrid で
-     列を親と共有させて揃える。対応していない環境では上の指定のまま動く。 */
-  @media (min-width:761px) {
-    @supports (grid-template-columns: subgrid) {
-      .ob-list { display:grid; grid-template-columns:22px minmax(0,1.05fr) minmax(0,1.2fr) auto; }
-      .ob-row  { grid-column:1 / -1; grid-template-columns:subgrid; }
-    }
+  /* 2列にするのは、1列あたり約420px以上とれる幅から。
+     それより狭いとひとことが2行に折れて、かえって読みにくい。 */
+  @media (min-width:1000px) {
+    .ob-list { grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+               column-gap:clamp(40px,5vw,84px); }
+    .ob-row:nth-child(-n+2) { border-top: var(--ob-line); }
   }
   @media (max-width:760px) {
-    .ob-row { grid-template-columns:20px minmax(0,1fr); gap:0 12px; padding:16px 2px; }
-    .ob-ico, .ob-ini { grid-column:1; grid-row:1; width:20px; height:20px; }
-    .ob-who  { grid-column:2; grid-row:1; }
+    .ob-row { column-gap:12px; padding:16px 2px; }
+    .ob-ico, .ob-ini { width:20px; height:20px; }
     .ob-name { font-size:14.5px; }
-    .ob-desc { grid-column:2; grid-row:2; margin-top:6px; font-size:12.5px; }
-    .ob-url  { grid-column:2; grid-row:3; margin-top:7px; }
+    .ob-desc { margin-top:1px; font-size:12.5px; }
+    .ob-url  { margin-top:4px; }
     .ob-note { padding:24px 2px; font-size:12.5px; }
   }
 
