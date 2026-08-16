@@ -147,28 +147,58 @@ html { scroll-behavior: smooth; }
      Webフォントは足していない。 */
   /* 積層の高さをロゴの高さに任せると、1024px あたりで行間が3.6pxまで詰まって
      線ではなく塊に見える。下限を持たせて 30本ぶんの間隔を確保する。 */
-  .ls { position:relative; display:flex; align-items:flex-end;
-        min-height:clamp(158px,13.5vw,210px); border-bottom:2px solid #111; }
+  /* 尺はここだけで決める。画面幅で速さを変えるため秒数を直接埋め込まない。 */
+  .ls { --t-rule:.06s;  --d-rule:1.15s;     /* 罫線を引く */
+        --t-line:.70s;  --step:.040s;       /* 積層が1本ずつ */
+        --t-red:2.10s;                      /* 頂点が朱に変わる */
+        /* 序盤がゆっくりな曲線。イーズアウトだと先端が最初に最速で走り、
+           左端にあるロゴの上を一瞬で通過して「線が文字を書く」感じが出ない。 */
+        --ease:cubic-bezier(.55,0,.25,1);
+        position:relative; display:flex; align-items:flex-end;
+        min-height:clamp(158px,13.5vw,210px); }
+  .ls-base { position:absolute; left:0; right:0; bottom:0; height:2px; background:#111;
+             transform-origin:left center; }
   .ls-type { font:700 clamp(40px,6.2vw,94px)/1.04 'Helvetica Neue',Helvetica,Arial,sans-serif;
-             letter-spacing:-.014em; color:#101010; margin:0 0 -.17em; }
+             letter-spacing:-.014em; color:#101010; margin:0 0 -.17em; width:100%; }
   .ls-stack { position:absolute; left:39%; right:0; top:0; bottom:0; }
   .ls-stack > i { position:absolute; right:0; height:1px; display:block;
                   transform-origin:right center; }
-  /* 動きは画面に入ってから。ロゴ → 積層が1997から順に立ち上がる */
-  #years[data-reveal="in"] .ls-type { animation:lsIn .8s cubic-bezier(.22,.61,.36,1) .1s both; }
-  #years[data-reveal="in"] .ls-stack > i { animation:lsLine .5s cubic-bezier(.22,.61,.36,1) both; }
-  #years .ls-type, #years .ls-stack > i { opacity:0; }
-  @keyframes lsIn   { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+
+  /* 罫線が左から引かれ、その先端が通過したところからロゴが現れる。
+     .ls-type を幅100%にして、罫線の scaleX と同じ進み方で clip-path を開く。
+     尺と曲線を揃えてあるので、先端と文字の出現位置が一致する。 */
+  #years[data-reveal="in"] .ls-base {
+    animation:lsRule var(--d-rule) var(--ease) var(--t-rule) both; }
+  #years[data-reveal="in"] .ls-type {
+    animation:lsWipe var(--d-rule) var(--ease) var(--t-rule) both; }
+  #years[data-reveal="in"] .ls-stack > i {
+    animation:lsLine .52s cubic-bezier(.22,.61,.36,1)
+              calc(var(--t-line) + var(--i) * var(--step)) both; }
+  /* 頂点は黒で着地してから、最後にまとめて朱へ。2027に到達した合図 */
+  #years[data-reveal="in"] .ls-stack > i.on {
+    animation:lsLine .52s cubic-bezier(.22,.61,.36,1)
+              calc(var(--t-line) + var(--i) * var(--step)) both,
+              lsRed .5s ease var(--t-red) backwards; }
+  #years .ls-base, #years .ls-type, #years .ls-stack > i { opacity:0; }
+  @keyframes lsRule { from{opacity:1;transform:scaleX(0)} to{opacity:1;transform:none} }
+  @keyframes lsWipe { from{opacity:1;clip-path:inset(0 100% 0 0)}
+                      to  {opacity:1;clip-path:inset(0 0 0 0)} }
   @keyframes lsLine { from{opacity:0;transform:scaleX(0)} to{opacity:1;transform:none} }
-  @media (prefers-reduced-motion: reduce) {
-    #years .ls-type, #years .ls-stack > i {
-      opacity:1 !important; transform:none !important; animation:none !important; }
-  }
-  /* スマホは横に並べる余地がない。ロゴの下に積層を置き直して行間を確保する
-     （そのまま縮めると30本の間隔が2pxを切って、線ではなく灰色の塊になる）。 */
+  @keyframes lsRed  { from{background:#1a1a1a} }
   @media (max-width:760px) {
+    /* スマホは横に並べる余地がない。ロゴの下に積層を置き直して行間を確保する
+       （そのまま縮めると30本の間隔が2pxを切って、線ではなく灰色の塊になる）。 */
+    .ls { --d-rule:.86s; --t-line:.50s; --step:.027s; --t-red:1.44s;
+          display:block; }   /* flex のままだと積層がフレックスアイテムになり、
+                                中身が絶対配置だけなので幅0に潰れて線が消える */
     .ls-stack { position:relative; left:auto; right:auto; top:auto; bottom:auto;
-                height:168px; margin:22px 0 10px; }
+                width:100%; height:168px; margin:22px 0 10px; }
+    .ls-base { bottom:auto; top:calc(100% - 2px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #years .ls-base, #years .ls-type, #years .ls-stack > i {
+      opacity:1 !important; transform:none !important; clip-path:none !important;
+      animation:none !important; }
   }
 
   /* --- THE DAY（#anticipation）を灯りのある暖色に --- */
@@ -632,7 +662,7 @@ html { scroll-behavior: smooth; }
             <div style="width:clamp(18px,2vw,30px);height:1px;background:#C8102E"></div>
             <div style="font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(11px,1vw,14px);letter-spacing:.3em;color:#C8102E">2027</div>
           </div>
-        <div class="ls"><div class="ls-type">Business<br>Bank</div><div class="ls-stack"><i style="top:96.667%;width:100.000%;background:#1a1a1a;animation-delay:0.340s"></i><i style="top:93.333%;width:95.000%;background:#1a1a1a;animation-delay:0.366s"></i><i style="top:90.000%;width:91.176%;background:#1a1a1a;animation-delay:0.392s"></i><i style="top:86.667%;width:87.697%;background:#1a1a1a;animation-delay:0.418s"></i><i style="top:83.333%;width:84.425%;background:#1a1a1a;animation-delay:0.444s"></i><i style="top:80.000%;width:81.299%;background:#1a1a1a;animation-delay:0.470s"></i><i style="top:76.667%;width:78.285%;background:#1a1a1a;animation-delay:0.496s"></i><i style="top:73.333%;width:75.360%;background:#1a1a1a;animation-delay:0.522s"></i><i style="top:70.000%;width:72.510%;background:#1a1a1a;animation-delay:0.548s"></i><i style="top:66.667%;width:69.723%;background:#1a1a1a;animation-delay:0.574s"></i><i style="top:63.333%;width:66.993%;background:#1a1a1a;animation-delay:0.600s"></i><i style="top:60.000%;width:64.310%;background:#1a1a1a;animation-delay:0.626s"></i><i style="top:56.667%;width:61.672%;background:#1a1a1a;animation-delay:0.652s"></i><i style="top:53.333%;width:59.073%;background:#1a1a1a;animation-delay:0.678s"></i><i style="top:50.000%;width:56.510%;background:#1a1a1a;animation-delay:0.704s"></i><i style="top:46.667%;width:53.980%;background:#1a1a1a;animation-delay:0.730s"></i><i style="top:43.333%;width:51.480%;background:#1a1a1a;animation-delay:0.756s"></i><i style="top:40.000%;width:49.008%;background:#1a1a1a;animation-delay:0.782s"></i><i style="top:36.667%;width:46.562%;background:#1a1a1a;animation-delay:0.808s"></i><i style="top:33.333%;width:44.140%;background:#1a1a1a;animation-delay:0.834s"></i><i style="top:30.000%;width:41.742%;background:#1a1a1a;animation-delay:0.860s"></i><i style="top:26.667%;width:39.365%;background:#1a1a1a;animation-delay:0.886s"></i><i style="top:23.333%;width:37.008%;background:#1a1a1a;animation-delay:0.912s"></i><i style="top:20.000%;width:34.670%;background:#1a1a1a;animation-delay:0.938s"></i><i style="top:16.667%;width:32.351%;background:#1a1a1a;animation-delay:0.964s"></i><i style="top:13.333%;width:30.049%;background:#1a1a1a;animation-delay:0.990s"></i><i style="top:10.000%;width:27.764%;background:#C8102E;animation-delay:1.016s"></i><i style="top:6.667%;width:25.494%;background:#C8102E;animation-delay:1.042s"></i><i style="top:3.333%;width:23.240%;background:#C8102E;animation-delay:1.068s"></i><i style="top:0.000%;width:21.000%;background:#C8102E;animation-delay:1.094s"></i></div></div>
+        <div class="ls"><b class="ls-base"></b><div class="ls-type">Business<br>Bank</div><div class="ls-stack"><i style="--i:0;top:96.667%;width:100.000%;background:#1a1a1a"></i><i style="--i:1;top:93.333%;width:95.000%;background:#1a1a1a"></i><i style="--i:2;top:90.000%;width:91.176%;background:#1a1a1a"></i><i style="--i:3;top:86.667%;width:87.697%;background:#1a1a1a"></i><i style="--i:4;top:83.333%;width:84.425%;background:#1a1a1a"></i><i style="--i:5;top:80.000%;width:81.299%;background:#1a1a1a"></i><i style="--i:6;top:76.667%;width:78.285%;background:#1a1a1a"></i><i style="--i:7;top:73.333%;width:75.360%;background:#1a1a1a"></i><i style="--i:8;top:70.000%;width:72.510%;background:#1a1a1a"></i><i style="--i:9;top:66.667%;width:69.723%;background:#1a1a1a"></i><i style="--i:10;top:63.333%;width:66.993%;background:#1a1a1a"></i><i style="--i:11;top:60.000%;width:64.310%;background:#1a1a1a"></i><i style="--i:12;top:56.667%;width:61.672%;background:#1a1a1a"></i><i style="--i:13;top:53.333%;width:59.073%;background:#1a1a1a"></i><i style="--i:14;top:50.000%;width:56.510%;background:#1a1a1a"></i><i style="--i:15;top:46.667%;width:53.980%;background:#1a1a1a"></i><i style="--i:16;top:43.333%;width:51.480%;background:#1a1a1a"></i><i style="--i:17;top:40.000%;width:49.008%;background:#1a1a1a"></i><i style="--i:18;top:36.667%;width:46.562%;background:#1a1a1a"></i><i style="--i:19;top:33.333%;width:44.140%;background:#1a1a1a"></i><i style="--i:20;top:30.000%;width:41.742%;background:#1a1a1a"></i><i style="--i:21;top:26.667%;width:39.365%;background:#1a1a1a"></i><i style="--i:22;top:23.333%;width:37.008%;background:#1a1a1a"></i><i style="--i:23;top:20.000%;width:34.670%;background:#1a1a1a"></i><i style="--i:24;top:16.667%;width:32.351%;background:#1a1a1a"></i><i style="--i:25;top:13.333%;width:30.049%;background:#1a1a1a"></i><i class="on" style="--i:26;top:10.000%;width:27.764%;background:#C8102E"></i><i class="on" style="--i:27;top:6.667%;width:25.494%;background:#C8102E"></i><i class="on" style="--i:28;top:3.333%;width:23.240%;background:#C8102E"></i><i class="on" style="--i:29;top:0.000%;width:21.000%;background:#C8102E"></i></div></div>
           <div style="margin-top:clamp(9px,1.1vw,14px)">
             <span style="font-family:'Cormorant Garamond',Didot,'Hoefler Text',Garamond,Georgia,serif;font-size:clamp(11px,1vw,14px);letter-spacing:.3em;color:#55524D">1997</span>
           </div>
