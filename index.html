@@ -139,6 +139,21 @@ html { scroll-behavior: smooth; }
     p[style*="11px"] { text-wrap: balance; }
   }
 
+  /* --- THE DAY（#anticipation）を灯りのある暖色に --- */
+  /* 元は焦茶(#2A2320)に赤のラジアル、赤文字という組み合わせで、
+     暗い地に赤＝血の連想が出て「おどろおどろしい」と指摘を受けた面。
+     暗い転換点はページのリズムとして残したいので、面は暗いまま
+     「赤い霧」を「上から差す琥珀の光」に、赤文字をシャンパンゴールドに替える。
+     赤を完全に抜かず下端にごく薄く残して、LPの赤とのつながりは保つ。
+     設計側は正本のままなので、ここで上書きしている（インライン指定のため !important）。
+     金の小さい見出しでコントラスト比 7.06:1、本文 9.42:1 を実測（基準4.5）。 */
+  #anticipation { background:#3A2422 !important; }
+  #anticipation > div:first-child {
+    background:radial-gradient(100% 62% at 50% 0%,rgba(255,201,132,.34),transparent 56%),
+               radial-gradient(120% 85% at 50% 108%,rgba(196,74,92,.20),transparent 60%) !important; }
+  #anticipation > div:nth-child(2) { color:rgba(255,216,168,.08) !important; }
+  #anticipation [style*="color:#C8102E"] { color:#F3CE96 !important; }
+
   /* --- OB・OG COMPANY の一覧 --- */
   /* ロゴを並べると大きさも余白もばらつくが、ファビコンを22pxに揃えて置くと
      縮小方向なので粒が立ち、行の頭も自然に揃う。
