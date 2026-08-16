@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>創業30周年記念 大同窓会｜株式会社ビジネスバンク</title>
 <meta name="description" content="株式会社ビジネスバンクの創業30周年記念 大同窓会。2027年2月7日（日）、青山で久しぶりに集まりませんか。現社員・OB・OG・インターン経験者が対象です。">
@@ -136,6 +137,53 @@ html { scroll-behavior: smooth; }
     #years h2 { font-size: 31px !important; }
     #venue h2 { font-size: 42px !important; }
     p[style*="11px"] { text-wrap: balance; }
+  }
+
+  /* --- OB・OG COMPANY の一覧 --- */
+  /* ロゴを並べると大きさも余白もばらつくが、ファビコンを22pxに揃えて置くと
+     縮小方向なので粒が立ち、行の頭も自然に揃う。 */
+  #oblist { --ob-line: 1px solid rgba(16,16,16,.14); }
+  .ob-list { border-top: var(--ob-line); }
+  .ob-list[hidden] { display:none; }
+  .ob-row { display:grid; grid-template-columns:22px minmax(0,1.05fr) minmax(0,1.2fr) auto;
+            gap:22px; align-items:center; padding:19px 4px;
+            border-bottom: var(--ob-line);
+            color:inherit; text-decoration:none; transition:background .3s ease; }
+  a.ob-row:hover { background:rgba(16,16,16,.028); }
+  .ob-ico { width:22px; height:22px; display:flex; align-items:center; justify-content:center; }
+  .ob-ico img { width:100%; height:100%; object-fit:contain; display:block; }
+  .ob-ini { width:22px; height:22px; box-sizing:border-box; display:flex;
+            align-items:center; justify-content:center; border:1px solid rgba(16,16,16,.16);
+            font:400 11px/1 'Shippori Mincho B1',serif; color:#8a8a8a; }
+  .ob-name { font:500 15px/1.6 'Noto Sans JP',sans-serif; letter-spacing:.04em; color:#101010; }
+  .ob-desc { font:300 13px/1.75 'Noto Sans JP',sans-serif; letter-spacing:.03em; color:#6a6a6a; }
+  .ob-url  { font:300 11px/1 'Noto Sans JP',sans-serif; letter-spacing:.1em; color:#a5a5a5;
+             white-space:nowrap; transition:color .3s ease; }
+  a.ob-row:hover .ob-url { color:#C8102E; }
+  .ob-note { padding:30px 4px; border-top: var(--ob-line); border-bottom: var(--ob-line);
+             font:300 13px/1.9 'Noto Sans JP',sans-serif; letter-spacing:.06em; color:#8a8a8a; }
+  .ob-add { display:inline-block; margin-top:26px;
+            font:400 11px/1 'Noto Sans JP',sans-serif; letter-spacing:.14em; color:#C8102E;
+            text-decoration:none; border-bottom:1px solid rgba(200,16,46,.34); padding-bottom:6px; }
+  .ob-add:hover { border-bottom-color:#C8102E; }
+  .ob-hint { margin-top:14px; font:300 11px/1.9 'Noto Sans JP',sans-serif;
+             letter-spacing:.08em; color:#a5a5a5; }
+  /* 行ごとに別のグリッドにすると、右端のURL列が「その行のドメインの長さ」で
+     決まるので、列の位置が行ごとにずれる（実測で最大50px）。subgrid で
+     列を親と共有させて揃える。対応していない環境では上の指定のまま動く。 */
+  @media (min-width:761px) {
+    @supports (grid-template-columns: subgrid) {
+      .ob-list { display:grid; grid-template-columns:22px minmax(0,1.05fr) minmax(0,1.2fr) auto; }
+      .ob-row  { grid-column:1 / -1; grid-template-columns:subgrid; }
+    }
+  }
+  @media (max-width:760px) {
+    .ob-row { grid-template-columns:20px minmax(0,1fr); gap:0 12px; padding:16px 2px; }
+    .ob-ico, .ob-ini { grid-column:1; grid-row:1; width:20px; height:20px; }
+    .ob-name { grid-column:2; grid-row:1; font-size:14.5px; }
+    .ob-desc { grid-column:2; grid-row:2; margin-top:4px; font-size:12.5px; }
+    .ob-url  { grid-column:2; grid-row:3; margin-top:7px; }
+    .ob-note { padding:24px 2px; font-size:12.5px; }
   }
 
   /* --- image-slot の代替。写真が入るまでの枠 --- */
@@ -798,20 +846,14 @@ html { scroll-behavior: smooth; }
         </div>
         <div style="margin:0;font:400 14px/2.2 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.04em;color:#454545"><div>ビジネスバンクを<wbr>離れた<wbr>あと、<wbr>自分で<wbr>会社や<wbr>事業を<wbr>始めた<wbr>人も<wbr>たくさんいます。<span style="letter-spacing: 0.04em;">30周年を<wbr>機に、<wbr>そんな<wbr>OB・OGの<wbr>「今」も<wbr>少し<wbr>紹介できたらと<wbr>思っています。</span><span style="letter-spacing: 0.04em;">昔<wbr>一緒に<wbr>働いていた<wbr>あの<wbr>人が、</span><span style="letter-spacing: 0.04em;">今は<wbr>何を<wbr>しているのか。</span><span style="letter-spacing: 0.04em;">そんな<wbr>再会の<wbr>きっかけにも<wbr>なれば<wbr>嬉しいです。</span></div><div><span style="letter-spacing: 0.04em;">掲載を<wbr>ご希望の<wbr>方は、<wbr>お気軽に<wbr>実行委員まで<wbr>ご連絡ください。</span></div></div>
       </div>
-      <div data-r="grid6" style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:rgba(16,16,16,.14);border:1px solid rgba(16,16,16,.14)">
-        <div style="background:#fff;height:118px;display:flex;align-items:center;justify-content:center;font:300 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.24em;color:#b5b5b5">LOGO</div>
-        <div style="background:#fff;height:118px;display:flex;align-items:center;justify-content:center;font:300 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.24em;color:#b5b5b5">LOGO</div>
-        <div style="background:#fff;height:118px;display:flex;align-items:center;justify-content:center;font:300 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.24em;color:#b5b5b5">LOGO</div>
-        <div style="background:#fff;height:118px;display:flex;align-items:center;justify-content:center;font:300 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.24em;color:#b5b5b5">LOGO</div>
-        <div style="background:#fff;height:118px;display:flex;align-items:center;justify-content:center;font:300 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.24em;color:#b5b5b5">LOGO</div>
-        <div style="background:#fff;height:118px;display:flex;align-items:center;justify-content:center;font:300 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.24em;color:#b5b5b5">LOGO</div>
-        <div style="background:#fff;height:118px;display:flex;align-items:center;justify-content:center;font:300 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.24em;color:#b5b5b5">LOGO</div>
-        <div style="background:#fff;height:118px;display:flex;align-items:center;justify-content:center;font:300 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.24em;color:#b5b5b5">LOGO</div>
-        <div style="background:#fff;height:118px;display:flex;align-items:center;justify-content:center;font:300 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.24em;color:#b5b5b5">LOGO</div>
-        <div style="background:#fff;height:118px;display:flex;align-items:center;justify-content:center;font:300 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.24em;color:#b5b5b5">LOGO</div>
-        <div style="background:#fff;height:118px;display:flex;align-items:center;justify-content:center;font:300 10px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.24em;color:#b5b5b5">LOGO</div>
-        <div style="background:#fff;height:118px;display:flex;align-items:center;justify-content:center;font:300 11px/1 'Noto Sans JP','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;letter-spacing:.14em;color:#C8102E">＋ 掲載する</div>
+      
+      <div id="oblist" data-src="">
+        <div class="ob-list" hidden></div>
+        <div class="ob-note">これから<wbr>掲載していきます。<wbr>ぜひお知らせください。</div>
+        <a class="ob-add" href="https://docs.google.com/forms/d/e/1FAIpQLScGwlyj76GTWS9lqaoN7hakNcdwwNVRLQaj4CeWGvisdsaWrw/viewform" target="_blank" rel="noopener noreferrer">＋ 掲載する</a>
+        <div class="ob-hint">出欠の<wbr>ご回答フォームの<wbr>中でうかが<wbr>います<wbr>（お一人<wbr>2件まで）</div>
       </div>
+
     </section>
   
 
@@ -897,6 +939,125 @@ html { scroll-behavior: smooth; }
     } else {
       addEventListener('scroll', function () { toggle(scrollY > 620); }, { passive: true });
     }
+  }
+
+  // ---- OB・OG COMPANY をスプレッドシートから読む ----------------------
+  // 公開CSVを読み込み時に取得して描画する。取れなければ何もせず、
+  // 下に置いてある募集の案内をそのまま見せる（壊れた見た目にしない）。
+  var obBox = document.getElementById('oblist');
+  var obSrc = obBox && obBox.getAttribute('data-src');
+  if (obBox && obSrc) {
+    fetch(obSrc, { credentials: 'omit' })
+      .then(function (r) { if (!r.ok) throw 0; return r.text(); })
+      .then(function (t) { renderOb(obBox, parseCSV(t)); })
+      .catch(function () { /* 募集の案内のまま */ });
+  }
+
+  // 引用符つき・改行入りのセルも通す最小限のCSV読み取り
+  function parseCSV(text) {
+    var rows = [], row = [], f = '', q = false;
+    text = text.replace(/\r\n?/g, '\n');
+    for (var i = 0; i < text.length; i++) {
+      var c = text.charAt(i);
+      if (q) {
+        if (c !== '"') { f += c; }
+        else if (text.charAt(i + 1) === '"') { f += '"'; i++; }
+        else { q = false; }
+      }
+      else if (c === '"') { q = true; }
+      else if (c === ',') { row.push(f); f = ''; }
+      else if (c === '\n') { row.push(f); rows.push(row); row = []; f = ''; }
+      else { f += c; }
+    }
+    if (f !== '' || row.length) { row.push(f); rows.push(row); }
+    return rows.filter(function (r) {
+      return r.some(function (x) { return x.trim() !== ''; });
+    });
+  }
+
+  // 入力欄に何を書かれても http/https 以外へは飛ばさない
+  function safeUrl(raw) {
+    var s = (raw || '').trim();
+    if (!s) return null;
+    if (!/^https?:\/\//i.test(s)) {
+      if (/^[a-z][a-z0-9+.-]*:/i.test(s)) return null;   // javascript: 等
+      s = 'https://' + s;
+    }
+    try {
+      var u = new URL(s);
+      return (u.protocol === 'http:' || u.protocol === 'https:') ? u : null;
+    } catch (e) { return null; }
+  }
+
+  function renderOb(box, rows) {
+    if (rows.length < 2) return;
+    var head = rows[0].map(function (s) { return s.trim(); });
+    function col(keys, dflt) {
+      for (var k = 0; k < keys.length; k++)
+        for (var j = 0; j < head.length; j++)
+          if (head[j].indexOf(keys[k]) >= 0) return j;
+      return dflt;
+    }
+    var iName = col(['会社', 'サービス', 'name'], 0),
+        iDesc = col(['ひとこと', '説明', 'desc'], 1),
+        iUrl  = col(['URL', 'url', 'リンク'], 2);
+
+    var list = box.querySelector('.ob-list'), n = 0;
+    rows.slice(1).forEach(function (r) {
+      var name = (r[iName] || '').trim();
+      if (!name) return;
+      var u = safeUrl(r[iUrl]);
+      var el = document.createElement(u ? 'a' : 'div');
+      el.className = 'ob-row';
+      if (u) { el.href = u.href; el.target = '_blank'; el.rel = 'noopener noreferrer'; }
+
+      // アイコンはURLのファビコンを自動で引く。取れなければ社名の頭文字を明朝で置く。
+      //
+      // 経路について。google.com/s2/favicons は gstatic へ 301 する際に
+      // url=http:// を決め打ちするため、https のみのサイトが軒並み外れる。
+      // 実測で 11件中 9件が既定アイコンに落ちたので、gstatic を直接 https で叩く。
+      //
+      // 見つからないときも 404 と一緒に「灰色の地球儀」が返る。本文が正しい画像なので
+      // ブラウザは描画してしまい onerror は出ない。既定アイコンは 64px を頼んでも
+      // 16x16 で返るので、その寸法を手がかりに頭文字へ差し替える。
+      var ico = document.createElement('span');
+      function useInitial() { ico.className = 'ob-ini'; ico.textContent = name.charAt(0); }
+      if (u) {
+        ico.className = 'ob-ico';
+        var img = document.createElement('img');
+        img.alt = ''; img.loading = 'lazy'; img.width = 22; img.height = 22;
+        img.onerror = function () { ico.removeChild(img); useInitial(); };
+        img.onload = function () {
+          if (img.naturalWidth <= 16) { ico.removeChild(img); useInitial(); }
+        };
+        img.src = 'https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON'
+                + '&fallback_opts=TYPE,SIZE,URL&size=64&url='
+                + encodeURIComponent('https://' + u.hostname);
+        ico.appendChild(img);
+      } else {
+        useInitial();
+      }
+      el.appendChild(ico);
+
+      // 以降はすべて textContent で入れる（投稿された文字列をHTMLとして解釈しない）
+      var nm = document.createElement('span');
+      nm.className = 'ob-name'; nm.textContent = name; el.appendChild(nm);
+
+      var ds = document.createElement('span');
+      ds.className = 'ob-desc'; ds.textContent = (r[iDesc] || '').trim(); el.appendChild(ds);
+
+      var ur = document.createElement('span');
+      ur.className = 'ob-url';
+      ur.textContent = u ? u.hostname.replace(/^www\./, '') + ' ↗' : '';
+      el.appendChild(ur);
+
+      list.appendChild(el); n++;
+    });
+
+    if (!n) return;
+    list.hidden = false;
+    var note = box.querySelector('.ob-note');
+    if (note) note.hidden = true;
   }
 })();
 </script>
