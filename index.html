@@ -1034,7 +1034,6 @@ html { scroll-behavior: smooth; }
   (function () {
     var P = window.__BBP, bands = [].slice.call(document.querySelectorAll('.mq'));
     if (!P || !P.length || !bands.length) return;
-    var PER = 26;                      // 1本あたりの枚数
     var SPEED = 42;                    // 1秒あたりに流れる px
 
     var pool = P.slice();
@@ -1049,30 +1048,39 @@ html { scroll-behavior: smooth; }
 
     var live = [];
     bands.forEach(function (band, bi) {
-      var take = sets[bi % 2].slice(0, Math.min(PER, sets[bi % 2].length));
+      var take = sets[bi % 2];                 // 持ち分は全部使う
       if (!take.length) return;
+
+      function cell(p) {
+        var im = document.createElement('img');
+        im.src = './gallery/' + p[0] + '.jpg';
+        im.loading = 'lazy'; im.decoding = 'async'; im.alt = '';
+        im.style.aspectRatio = p[1] + '/' + p[2];
+        return im;
+      }
 
       var row = document.createElement('div');
       row.className = 'mq-row';
-      // 中身を2周ぶん置く。端まで来たら半分戻せば、継ぎ目なく回り続ける
-      for (var pass = 0; pass < 2; pass++) {
-        take.forEach(function (p) {
-          var im = document.createElement('img');
-          im.src = './gallery/' + p[0] + '.jpg';
-          im.loading = 'lazy'; im.decoding = 'async'; im.alt = '';
-          im.style.aspectRatio = p[1] + '/' + p[2];
-          row.appendChild(im);
-        });
-      }
+      take.forEach(function (p) { row.appendChild(cell(p)); });
+
+      // 継ぎ目を隠すぶんだけ先頭を複製して足す。全部を2周ぶん並べると
+      // 1本で使える枚数が半分になり、同じ写真がすぐ戻ってきてしまう。
+      // 画面を埋めるぶん（写真1枚を最小120pxとみて）＋余裕3枚あれば足りる。
+      var extra = Math.min(take.length,
+                           Math.ceil((band.clientWidth || 1440) / 120) + 3);
+      for (var k = 0; k < extra; k++) row.appendChild(cell(take[k]));
       band.appendChild(row);
 
       var st = { el: band, row: row, dir: band.getAttribute('data-dir') === 'right' ? -1 : 1,
                  half: 0, pos: 0, hold: 0, drag: false, x0: 0, s0: 0, seen: true };
       live.push(st);
 
-      // 折り返しに当たらない位置から始める（右へ流す側は減らしていくので後ろから）
+      // 一周の長さ＝複製した1枚目が、本物の1枚目からどれだけ右にあるか
       requestAnimationFrame(function () {
-        st.half = row.scrollWidth / 2;
+        var kids = row.children;
+        st.half = kids[take.length]
+          ? kids[take.length].offsetLeft - kids[0].offsetLeft
+          : row.scrollWidth / 2;
         st.pos = st.dir < 0 ? st.half - 1 : 1;
         band.scrollLeft = st.pos;
       });
@@ -1119,7 +1127,7 @@ html { scroll-behavior: smooth; }
       var dt = prev ? Math.min(now - prev, 50) : 0;   // タブ復帰時に飛ばさない
       prev = now;
       live.forEach(function (st) {
-        if (!st.half) { st.half = st.row.scrollWidth / 2; return; }
+        if (!st.half) { return; }
         if (st.hold > 0) {
           st.hold -= dt;
           st.pos = st.el.scrollLeft;        // 人が動かしたぶんを引き継ぐ
