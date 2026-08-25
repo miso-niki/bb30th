@@ -140,33 +140,30 @@ html { scroll-behavior: smooth; }
   }
 
   /* --- 思い出写真の帯（30 YEARS の上下） --- */
-  /* 上は右へ、下は左へ流す。行の中身を2つ並べて -50% ずらすと継ぎ目なく回る。
-     両端をぼかして、写真が湧いて消えるように見せる。 */
+  /* 上は右へ、下は左へ流す。行の中身を2つ並べ、端まで来たら半分だけ
+     戻すことで継ぎ目なく回る。
+     動かすのは transform ではなくスクロール位置。transform だと指で
+     動かせないため。スクロールなら、指のスワイプ・トラックパッド・
+     マウスのドラッグがそのまま効く。 */
   .mq-band { overflow:hidden; }
   .mq-top { padding:clamp(40px,4.6vw,64px) 0 0; }
   .mq-bot { padding:0 0 clamp(46px,5.4vw,74px); }
   #years > div:not(.mq-band) { padding-top:clamp(52px,5.6vw,72px) !important;
                                padding-bottom:clamp(52px,5.6vw,72px) !important; }
-  .mq { overflow:hidden;
+  .mq { overflow-x:auto; overflow-y:hidden; scrollbar-width:none;
+        -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain;
+        cursor:grab;
         -webkit-mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%);
         mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%); }
-  .mq-row { display:flex; gap:10px; width:max-content; will-change:transform; }
+  .mq::-webkit-scrollbar { display:none; }
+  .mq.is-drag { cursor:grabbing; }
+  .mq-row { display:flex; gap:10px; width:max-content; }
   .mq-row img { flex:none; height:clamp(104px,11.5vw,152px); width:auto; display:block;
-                background:#e6e3de; object-fit:cover; }
-  .mq[data-dir="left"]  .mq-row { animation:mqL var(--dur,140s) linear infinite; }
-  .mq[data-dir="right"] .mq-row { animation:mqR var(--dur,140s) linear infinite; }
-  .mq:hover .mq-row { animation-play-state:paused; }
-  @keyframes mqL { from{transform:translate3d(0,0,0)}      to{transform:translate3d(-50%,0,0)} }
-  @keyframes mqR { from{transform:translate3d(-50%,0,0)}   to{transform:translate3d(0,0,0)} }
+                background:#e6e3de; object-fit:cover;
+                -webkit-user-drag:none; user-select:none; pointer-events:none; }
   @media (max-width:760px) {
-    .mq-row { gap:7px; }
-    .mq-row img { height:96px; }
-  }
-  /* 動きを控える設定なら止めて、指で送れるようにする */
-  @media (prefers-reduced-motion: reduce) {
-    .mq { overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
-    .mq::-webkit-scrollbar { display:none; }
-    .mq-row { animation:none !important; }
+    .mq-row { gap:8px; }
+    .mq-row img { height:132px; }
   }
 
   /* --- 締めのロゴ＋積層（#mark） --- */
@@ -702,7 +699,7 @@ html { scroll-behavior: smooth; }
       </div>
 
     </div>
-  <div class="mq-band mq-bot"><div class="mq" data-dir="left"></div></div><script>window.__BBP=[["1SfvmnKnXJGRTdGwzdDjbFCEQFAE_JW-2",320,213],["1yxwrGQjXNBh0nX7kpmTxp0UAdxJUhu6B",320,320],["1J-tl0HEtxBkGx9e5_yfzleTzcJ1cdbL1",320,240],["1yxbE8PEFFWt6oJdigw1wlF26d81x6CoK",320,298],["1_f55LTG5GxEE64I2Xc7-oNbSuPcy0_FK",320,267],["15f-MjI3fssZaVJezVKJm9tcjM8jgNs9c",320,427],["15Nx-W-9g90aLD_4fM8g8gAV7lphciUtP",320,213],["1XoLu1O7wLcgiZS7py6ieRAEF7HJzKkdx",320,240],["1rCHP7IXDo3I0xYOQgF_MhQaF6fKJY7R3",320,213],["1qaVPsD32t_c8XsP5IbWV8S71OtFuULny",320,240],["1XDhP6bWoOLhbt1HwwdgxXAsVtdDZHKBN",320,213],["108tCzzQ34eW9EYm5y9hdyepIO-Cfj3gQ",320,213],["1Y-6CERbj5b-_Rkgozx5zP_3xWUJDc5cV",320,213],["1_pp9XI0RYxAusPQt6ahc9c0pDCCji6J6",320,213],["1g5YG-Lt8_ZpJY_U5gWoqqhj0fAnSjBcS",320,213],["1bqu3YE8ABbBjqfsaIZdkUR52WOCeLJi5",320,213],["1Hx2qhQBimNjHedglJa_IIXwXzkvFXU_d",320,213],["1nBKjMsn1lgT1kqDKH6wfjrQSiSjToEgQ",320,212],["1cD7z5F-Qj-6KJiIR7JdMF5xdoZS5eVBT",320,320],["1-rv_SFX53U7SYoFP8-jBamODJDVW7xFS",210,280],["1UqrsXrjvAAc0JUWmq4XR6eyr5k4SKDDy",320,268],["1epiEYbMtMvngqjT1xyPcMWLW_5X_HdkF",320,320],["1BUD_TSU7MHY3dyn9Bm146AW9-Lfsz-9I",320,239],["1Z0Nn5IsbxUofygghVpag68AKLxhzdhJ_",320,212],["1e_1CxfcFPHSart-2sGExE0KOyCulWNVT",320,212],["1Meaiv0DjOKrhmpEtYVtFXm8ubPSKdMIL",320,247],["12fcP4qnA7DwWJ_NNVjeRWt9gOe4dax1N",320,179],["1JnOyXOgb49wNiYfrz6vrwl8Glkddo7YK",320,212],["1JS9m5t7yzAhHTYDxdBW57cv1ATGvxA6c",320,212],["1Q9JGg0IGz9v1XT3xTADz82dX1cFKcG_x",320,212],["1OYdYzRI35tdgybo2FALBZBej5s2B7c33",320,212],["1ZhaEzgTcN6WlYCq3n8qsy8Hk-Yf70fya",320,212],["1KDlDRBLMmXYebOzX9jHUbp0-g89KSLMk",320,483],["12YvnWkUHC9TPXOlCeMjP34a8dmXuyQ_T",320,240],["1miVzCJKMhc7g2G3vn61Z6ZDHXu2zgdL0",320,212],["1UjdRf5aJJU_S3m-vRyZA-xC-c_D1IdEu",320,240],["13tnuGnCDPWXKw1FNMsbZcYlzSK6oNNwY",320,212],["1mljQz077cS0NoFCgWTvDsUDrDbYbJ1TM",320,240],["1o3xzG6h_qbdiUBDTI7zW74QzkmjPI6mA",320,212],["1bspbQ4Jwvc34sbIf42cWyNP5d78Pa8-_",320,240],["1dgHk0Zna7t06RjoejvTowDXsUhytRanT",320,212],["1OH2FC1WzpTrXa7SfDN7OSZW-pdOS7nyV",320,212],["1MXgJMZHQnZLT-bx6UncSJ4b0nmb9SRh3",320,212],["1K36QZrTUDtOgFrOkbklvmbWJaZLM2iqE",320,320],["191ln1JdTJL8I_LyNnRyntABIfABq6tl7",320,212],["1uiNtnipbmtcySVlVnEjZbEV661EknMy2",320,240],["12f4vRIYBcDn7C3uQJFA15UFFhUT54hEk",320,240],["1-mPyySOwK9tti_97-kaYq9XohpT-ZmWe",320,181],["1wa9_pjvcwvPLiLw36MooY3u1_7DtAVAq",320,427],["1g8gJSFNnj5mYns7nOq-aSYUzX-j3OjBJ",320,240],["1zIbFsNPNFY9LWY-24xtl-HfhEn6xNUc3",320,212],["1EYvBi5ILf4ufOQsmfkrX8jnUKZGMrgam",320,212],["1y10dRipBjkKZYFTMLOweZP8ZOVF8WzI5",320,427],["1vtRTjw-tZsRXlWVgcTw9CP2VHqrnN7OM",320,212],["1DnpEMhGyKmBw8V6Qq_Gcl4-cFhW2Kvv4",320,427],["1LTDuyHu5VeYeWubdnYvWInwalasIrdLG",320,427],["1EwQPIeBtubGETq35XkoVaPhqPu4w3lyu",320,212],["1U6q7kprR0QZ-RqaE2K7tJS7216kmrd4H",320,240],["15VJk24PEzReqvb8PGVMgxgpgtFx31kzM",320,240],["1xj5DGhqspiyvXb8kUzsV3jvBkuF6cp-m",320,240],["1wEwvT9AbnBQ3qm9lPgLhiOGBvmkAGZ-9",320,240],["1cgOiw_xO7LYVCYMgwkXRsgzUG10DOxRs",320,240],["17EhM1JiO_CSSBqc_16kCqcfDiWLUerCC",320,213],["1UqXG_w7R9oM1bUjmRvy06qRZzv77yDS6",320,240],["1zkAhP6v3Wq_ybDAXKkpl5aDzk32DsiJy",320,240],["1bcOhQUsUHsMVYqhRgq8qG_NqKOoQQeMM",320,427],["1523I-hOovnhamDtciclOgCPHuixCBlMa",320,240],["1c0ylbPasx1spEjViqaBSv6rNPfkAuXqt",320,320],["1NGzVGgmQVfjfOPgrSL9o4RAuzgskGFMC",320,212],["1OsG6bjbEfCgtO8FK99tXn1FeXSrwTr6u",320,212],["11pwp8nQCFsjA1jFQm6IOlHei-9n0muHR",320,427],["1mMYZYrg3BdVmJ9G0sPCbCGZ8TZze6dns",320,212],["1ow227a_208VkBR6E10p8rbPcQdBqB2Lz",320,240],["1LUeNAW2YXDt4YNPRI3juhl1hP0dnV1Du",320,212],["1Aez5r1ClEZU9WyFGaKapW-ITnk4l2E-w",320,213],["1W_yzpd5mmcyW_Cha8iHjFkgqaeWJi2YD",320,427],["1Qgjj3W4zBZ8psngYHbRHRTujakqdFmjx",320,212],["1GpL4cY_dlhNQ5fNUzJ9T-XYdUwYbR-6p",320,427],["1n98LWyKxg7RvcgpMBEClUqRTgzrHJc5B",320,240],["1o2Y79FhTn7T_HWfW8DuMtXQ6IZERHTGI",320,427],["1v2QU1MHCSK2anZ8Dwd3itrTAkEyTalYC",320,212],["1riERfn7aUjvFWRg6qKo_fxpGebddStV7",320,240],["1IGRC4P9PbRGm1rgRQddmJDVImKuE_8k5",320,212],["14l2-7RgzpRDPY-_KE15NIx8JlG4KvuQX",320,212],["1eXfppESsJSOv-kN3413hTFYSWdJluJjd",320,212],["1sQc-YxkuLhrePLZJ1b33MgWlg-8l5Neh",320,240],["1l30xOXuyGVU9EsSqQ4cocZu2aVl9nrXx",320,212],["1H_eBvr9dQdSzUQlOEl-4iYaFu2uSKTgB",320,212],["1XePhEZcVyHlz-9a1v26MmIjW8DgSP9kT",320,212],["1U6FafLaGtTrf4b2clX1lC58OeoO-T020",320,212],["1pM_c8JD0N3MzbR4xS4c-9OUKGzbVrHVG",320,212],["1waGj_eNW1o3BG_z-ozwPkuzQtx0GAu3N",320,427],["1cSbiPkEKUYrDCN1F0Aw9gbUqnq05_-Pj",320,240],["1vN38Hnxk0erwZPI5rUtEKhaX3gtH15uz",320,240],["1toHd5pBSFhv0FKeb-zFY_eDkLg8wWAyq",320,213],["13IT0qZUxaqCYWRZhiIudXZ6DVN9ymFuP",320,240],["1WI01o9NM3p7cWUWhUKm775i7vDFpR4Tg",320,427],["1vN7R8XQGttZWnAJEjiYX6vwDaeIGPh1X",320,174],["1VQCMNNmxXLc5L_wI9WaTxYQBwU6z2HIO",320,212],["1YrzcSSESZE4HL-mGnrApiRov3aIAdkDT",320,240],["1V-LBMcT3hWzNSK67cY01IKo9kiYu9Lwd",320,212],["1l4hN3dQIltTBe1HWashicsuPhXaHo-YH",320,427],["1Y7PXc_YRT-r9fJxtatF_TDN8RiVBgtvV",320,240],["1gZ5Pl-XhMVgZMkLy777Wcacqzg77sYXd",320,212],["1bckR29ITxYjSgQEDHJGGccG1AU68efyD",320,427],["1NSbRdFVKG6LwDX69CAZdIDIhdssYzGf6",320,212],["1qDW9-eLvGKJVf_VajPQX3XQ4ApVf2o5U",320,240],["1MzyGDl9CEMeFI1nigSXhHE2m-tEzor6r",320,427],["1mWtenzkba00MypdCfonLE4d_6kHH6kki",320,212],["1vvRNZbeslK49FslzzH3WCRkIfXZopM2o",320,240],["1tIGF88HSI7dNpAkiJsL-jzzku56pKV2Y",320,240],["1HYg5RIfMFLb7tkWQpzi-CxdkxX-nzwnZ",320,240],["1dH-VxmJFHOf9fm2dkvWfEdzlEsCkguR7",320,240],["19aSCv0jswCuMr7AFy1uw_LzAZ_6JzPo7",320,427],["1XVhvB-vuHS9rwddn5T8b77wLvP7BenFv",320,427],["1R-zZ0w_E0nMb3-cLSt73nuuI6glDBlp6",320,240],["1hH3zLyONcMQPJci5-blcuhEdmkgB2eVx",320,427],["1TavHa1TuN39o_X9ZzLtv09HzHajWNowH",320,240],["1YEE9lMQbKrzwtj8gu43zyq1zS4Ckybdb",320,212],["1Fc83Iw4rDVNxW5E_WYTJXf9dD16-Cift",320,212],["1i7bsfSrXp-KWEl_CKtitXTVF3U_CP9ug",320,240],["1LOOMAQCZUxEZPMPdnSnMHmtFMnlGD9sp",320,427],["1VvqTmdqyKasDQz8yRLWi9UXBrwjQJ-15",320,427],["1lDYFRFlU3dese46Nyf3u8r87nM25tDgJ",320,427],["1OVAqUQaAX_aD6qBKRogZWx-jKi0yasGF",320,240],["1cgMfXnfgFHGuZrxNRiZ0J2u8vcd7J0ZY",320,476],["1P3h2SWi6gTTWYJ8-yRfox97--qpHIJlC",320,213],["1QndiLDaEZCRFR52noROyN6Av2b-WWxXv",320,240],["1sErW5tNC9r19FgP5ohLYazSgPVWWNQjS",320,320],["1ZbgRrpFgRanQHRe-kEpHP8hSfxJSNQQR",320,213],["1eJi6Y5_9XTQhFzJbIyQmig_jNOAtCzsh",320,240],["1Q2lWxENDWD289gmvUldUSB0hVPZfr3qb",320,240],["11Ox_DDaA2xf7fkZsJ0cW59ahAmXVHbsw",320,427],["11NH_cSOCj5IwMuR6Fb1xKpFEwCF9DQ0-",320,320],["1y3YRgL0_ML-v4wefn9tbJ6Kb1lvpOWnD",320,240],["1UuKoc8W-3ktGRSLmhMP0vOb__boInIys",320,320],["1sTBWExlm-gf82As7WxRViF5bMz3x2PP3",320,240],["1Q9kg8W91OXK8M6p2quoIqzPhfIiIP18R",320,320],["1JdONx2_zbTcN3QD2kvmyofRd7GEQ1jEj",320,320],["16cqegO1POwNYvScGfAISx2ltj3a_PHWg",320,427],["18AFPE7dd7emIo4QtO37RXWJaKCJ1dd5Q",320,240],["1ce1_FkBoXmjEll3pzIjC__fLvAn3YlN2",320,240],["1szc87wWbdTFd8OaOz6mzIaPCqwVXXkN-",320,320],["1OGzI0vxOArtkl2GzV70HL0akzuWF1IJf",320,240],["19Wc5Rb0DPVlydCTW8xB1sp6QBdC1RQhW",320,240],["1wnBELfHMvdinkca3LVayc3hBZwG5ND-P",320,427],["1Z-Vnhzwr1vKxxz5E1gZgTI7uzEVxvE6b",320,240],["18_QBHbaX9qEjFVxV0rEzgEbHUYw5tuKN",320,240],["1_TsqL_aB-RpGKa3ww7Rlo8BZg5PdHrT0",320,240],["1gCChH0HRarGk1ocHPQL3Aq2hQWPiKizV",320,427],["1Kr54VDSfLTyVcFCgle1VXUUIp7rzdY0m",320,320],["1fluCgEuqIx4ruaeWds9dZvszocpOtQqg",320,320],["1QfVEfoaGx7-RlJM1s7naS_OKZ8C4quHk",320,427],["1LC544b5x7uaD_Snn0dbVlny4if2vFoFm",320,320],["1c5vFFZTJV8Q2YqhW4BZTBB1WwIfrYluR",320,427],["16-_G55tPiy7FJrvwZloBafimHiensWjO",320,320],["1TTlOtYIGTGfDc7ojn-EP3tM49h5WeKUq",320,320],["1ofd5t-goEBEcC4Ul6v3HatkJAG60I3xC",320,240],["1JRnDrqvb7bxw4rod2MoS6Prxu_UKu4BH",320,240],["1dZsaPNghGAgqN5gk5QzyYmgdxub2ExCA",320,427],["1MvtEHVjj9SJOR6FmN_p7VOLUHo_fpUAQ",320,240],["1J5RVzJjot9bGIQrjkfBr8SonWkA6alaN",320,212],["1e2J4b-wBFHsu3wzNPgLtXohU2Gs9QjJm",320,240],["1cBccV0Xz3hba9CAa6OioVyBz3ya73s0j",320,427],["17jW5b1b5692g4-0ZH3U4Jswxx0K7oir7",320,240],["1V2-_fU99YtqLqTJpLylAFsdozLeI6ctS",320,240],["1-Cn-SxPCQrnhB9vuL-KCRdjk4pBQs2A4",320,427],["1J_uwQAZTdAsk8dRJS97VhH3PJ8QTweYU",320,427],["1sTFm5fB7j3bm329N-tCSzXKtqE6ow3PG",320,427],["10gxHm3Aofy0rDCa2ILEU88eqmoevF8iB",320,427],["1DB0VJbmmwcBA9c38tEcDSoJeuv3oz-S4",320,240],["1qj_E00LVtlCp3vqfH1U9JzbVnL7rseRK",320,240],["1KrkW-OcmOUGZGZbshg0MlH9M7PsWt7sO",320,240],["1mGqgb6H1sDyLhBE624QFAwgIW6qfWRCv",320,427],["1p2JmwNXwNNsmCaDUSYZBlDKO9H96L9OD",320,213],["1m3LjDQM_HHklIuBvXX_ArLyQFygdhGSr",320,427],["1oogFdjHNaQNdh2ZJLkS1yCXWmqen0lpJ",320,320],["1GpYMEzHArleLHY9GXwRSKdZwW1-6WgZZ",320,240],["1JVTfDE8IRWfowDb0gQEIJzUkfSy4lyl5",320,427],["1DWA1raM05X6sI3ul9KWy1G-k3m6fDS05",320,258],["14zMxFvNppVlRxcify5rT1bf8ka-NAQw3",320,240],["177DU1yJEfum1YPi88rqFBWPAmn6v68eF",320,240],["1o1l3kO3O7xOAGdY6chaxaHVeMkLCrTDN",320,240],["1NCXPzK1hCtCVIYferZBqEyOiTXXzUGMZ",320,240],["1pHRcuP3uEPsctuydYWWkyex9JrgHeLrx",320,240],["14t5A7DJ-jF6rcGWystoLoghMImjHhhBX",320,320],["1t38qJLCHefu0OQ1AkpAhRM7rdltVFSPa",320,427]]</script></section>
+  <div class="mq-band mq-bot"><div class="mq" data-dir="left"></div></div><script>window.__BBP=[["1SfvmnKnXJGRTdGwzdDjbFCEQFAE_JW-2",600,399],["1yxwrGQjXNBh0nX7kpmTxp0UAdxJUhu6B",460,460],["1J-tl0HEtxBkGx9e5_yfzleTzcJ1cdbL1",600,450],["18IteSpBpQ-WyKq-vbl85Ey3Ve1tcTA_5",600,450],["1tPRggTlusn1k5G_BU8zuBpZvSFofW_hX",600,450],["17kr-UGGfMZ29hx8xH-LbuOO3XrhOJrBs",600,450],["1jSyk1Kq3Tl7wNI8-e-5gqtSWpm7lmTUg",600,450],["1hO4J1hwpQOzUMUZCSlViQtgqn51xAPTf",600,450],["1VJ1RaTUNDfFp31vfuM2glL6WIdSwZAnc",600,450],["1xp8_ipoUJPMMdV-QerxVZWjHjHVgVnj0",600,450],["10IalhpSl4CJJITQFRsyNHKs8VUcGW0zd",600,448],["1ICXi7XjpwfMy5xyrfYwkoc56Qyk5QCdc",600,448],["1oVGPp0_vsgpS4nZM0etfG4564ccXd5BH",600,448],["1B1xEW8f8OVDEy9odIqB9qEteoh4zc2KO",600,448],["16p8qDJA_x8xqWIX3OpyKF-QDcZbTij8X",600,448],["1PIWTkyvE-A5_lUypub_bA6z6rWLPTWIY",600,448],["1e-ChzTQHMGkcTgBCcaVc6XCIDvu4ZC36",600,448],["10prHzadLWdxr5CXTTf0d9fpT6rCS9wGs",600,450],["1yxbE8PEFFWt6oJdigw1wlF26d81x6CoK",494,460],["1_f55LTG5GxEE64I2Xc7-oNbSuPcy0_FK",552,460],["15f-MjI3fssZaVJezVKJm9tcjM8jgNs9c",345,460],["15Nx-W-9g90aLD_4fM8g8gAV7lphciUtP",600,400],["1XoLu1O7wLcgiZS7py6ieRAEF7HJzKkdx",600,450],["1rCHP7IXDo3I0xYOQgF_MhQaF6fKJY7R3",600,400],["1qaVPsD32t_c8XsP5IbWV8S71OtFuULny",600,450],["1XDhP6bWoOLhbt1HwwdgxXAsVtdDZHKBN",600,400],["108tCzzQ34eW9EYm5y9hdyepIO-Cfj3gQ",600,400],["1Y-6CERbj5b-_Rkgozx5zP_3xWUJDc5cV",600,400],["1_pp9XI0RYxAusPQt6ahc9c0pDCCji6J6",600,400],["1g5YG-Lt8_ZpJY_U5gWoqqhj0fAnSjBcS",600,400],["1bqu3YE8ABbBjqfsaIZdkUR52WOCeLJi5",600,400],["1Hx2qhQBimNjHedglJa_IIXwXzkvFXU_d",600,400],["1Q7HWcLtClT83DOGKKwmEEHxNq1JUF_4J",600,402],["1nBKjMsn1lgT1kqDKH6wfjrQSiSjToEgQ",600,399],["1cD7z5F-Qj-6KJiIR7JdMF5xdoZS5eVBT",403,403],["1-rv_SFX53U7SYoFP8-jBamODJDVW7xFS",210,280],["1UqrsXrjvAAc0JUWmq4XR6eyr5k4SKDDy",550,460],["1epiEYbMtMvngqjT1xyPcMWLW_5X_HdkF",460,460],["1vPDB1UlPI-sHFJyt6UWP1zKuXbm4BDNJ",600,448],["1BUD_TSU7MHY3dyn9Bm146AW9-Lfsz-9I",600,448],["1Z0Nn5IsbxUofygghVpag68AKLxhzdhJ_",600,397],["1e_1CxfcFPHSart-2sGExE0KOyCulWNVT",600,397],["1VSRshPOyRx2oBdfS_Wwq4EG3mXUlj7gB",600,448],["1AZ-FKV4XuguZKpFSyP0ZxsFahtaZ9Qht",600,448],["1Meaiv0DjOKrhmpEtYVtFXm8ubPSKdMIL",596,460],["1gFuRyZOoUNCzCKy274S90qEIqse6Dma1",600,448],["12fcP4qnA7DwWJ_NNVjeRWt9gOe4dax1N",600,336],["1JnOyXOgb49wNiYfrz6vrwl8Glkddo7YK",600,399],["1JS9m5t7yzAhHTYDxdBW57cv1ATGvxA6c",600,399],["1H5F6a160v4texc8vVCqBiJmStxxbw0TL",600,448],["1Q9JGg0IGz9v1XT3xTADz82dX1cFKcG_x",600,397],["1AumXmg9USN47NHRl8qBi7psDpi41qCzn",344,460],["1OYdYzRI35tdgybo2FALBZBej5s2B7c33",600,397],["1ZhaEzgTcN6WlYCq3n8qsy8Hk-Yf70fya",600,397],["1KDlDRBLMmXYebOzX9jHUbp0-g89KSLMk",305,460],["12YvnWkUHC9TPXOlCeMjP34a8dmXuyQ_T",600,450],["1miVzCJKMhc7g2G3vn61Z6ZDHXu2zgdL0",600,397],["1UjdRf5aJJU_S3m-vRyZA-xC-c_D1IdEu",600,450],["13tnuGnCDPWXKw1FNMsbZcYlzSK6oNNwY",600,398],["1mljQz077cS0NoFCgWTvDsUDrDbYbJ1TM",600,450],["1o3xzG6h_qbdiUBDTI7zW74QzkmjPI6mA",600,399],["1bspbQ4Jwvc34sbIf42cWyNP5d78Pa8-_",600,450],["1dgHk0Zna7t06RjoejvTowDXsUhytRanT",600,397],["1OH2FC1WzpTrXa7SfDN7OSZW-pdOS7nyV",600,397],["1MXgJMZHQnZLT-bx6UncSJ4b0nmb9SRh3",600,397],["1K36QZrTUDtOgFrOkbklvmbWJaZLM2iqE",460,460],["191ln1JdTJL8I_LyNnRyntABIfABq6tl7",600,397],["1uiNtnipbmtcySVlVnEjZbEV661EknMy2",600,450],["12f4vRIYBcDn7C3uQJFA15UFFhUT54hEk",600,450],["1-mPyySOwK9tti_97-kaYq9XohpT-ZmWe",600,340],["1wa9_pjvcwvPLiLw36MooY3u1_7DtAVAq",345,460],["1g8gJSFNnj5mYns7nOq-aSYUzX-j3OjBJ",600,450],["1zIbFsNPNFY9LWY-24xtl-HfhEn6xNUc3",600,397],["1EYvBi5ILf4ufOQsmfkrX8jnUKZGMrgam",600,397],["1y10dRipBjkKZYFTMLOweZP8ZOVF8WzI5",345,460],["1vtRTjw-tZsRXlWVgcTw9CP2VHqrnN7OM",600,397],["1DnpEMhGyKmBw8V6Qq_Gcl4-cFhW2Kvv4",345,460],["1LTDuyHu5VeYeWubdnYvWInwalasIrdLG",345,460],["1EwQPIeBtubGETq35XkoVaPhqPu4w3lyu",600,397],["1U6q7kprR0QZ-RqaE2K7tJS7216kmrd4H",600,450],["15VJk24PEzReqvb8PGVMgxgpgtFx31kzM",600,450],["1xj5DGhqspiyvXb8kUzsV3jvBkuF6cp-m",600,450],["1wEwvT9AbnBQ3qm9lPgLhiOGBvmkAGZ-9",600,450],["1cgOiw_xO7LYVCYMgwkXRsgzUG10DOxRs",600,450],["17EhM1JiO_CSSBqc_16kCqcfDiWLUerCC",600,400],["1UqXG_w7R9oM1bUjmRvy06qRZzv77yDS6",600,450],["1zkAhP6v3Wq_ybDAXKkpl5aDzk32DsiJy",600,450],["1bcOhQUsUHsMVYqhRgq8qG_NqKOoQQeMM",345,460],["1523I-hOovnhamDtciclOgCPHuixCBlMa",600,450],["1c0ylbPasx1spEjViqaBSv6rNPfkAuXqt",460,460],["1NGzVGgmQVfjfOPgrSL9o4RAuzgskGFMC",600,397],["1OsG6bjbEfCgtO8FK99tXn1FeXSrwTr6u",600,397],["11pwp8nQCFsjA1jFQm6IOlHei-9n0muHR",345,460],["1mMYZYrg3BdVmJ9G0sPCbCGZ8TZze6dns",600,397],["1ow227a_208VkBR6E10p8rbPcQdBqB2Lz",600,450],["1LUeNAW2YXDt4YNPRI3juhl1hP0dnV1Du",600,397],["1Aez5r1ClEZU9WyFGaKapW-ITnk4l2E-w",600,400],["1W_yzpd5mmcyW_Cha8iHjFkgqaeWJi2YD",345,460],["1Qgjj3W4zBZ8psngYHbRHRTujakqdFmjx",600,397],["1GpL4cY_dlhNQ5fNUzJ9T-XYdUwYbR-6p",345,460],["1n98LWyKxg7RvcgpMBEClUqRTgzrHJc5B",600,450],["1o2Y79FhTn7T_HWfW8DuMtXQ6IZERHTGI",345,460],["1v2QU1MHCSK2anZ8Dwd3itrTAkEyTalYC",600,397],["1riERfn7aUjvFWRg6qKo_fxpGebddStV7",600,450],["1IGRC4P9PbRGm1rgRQddmJDVImKuE_8k5",600,397],["14l2-7RgzpRDPY-_KE15NIx8JlG4KvuQX",600,397],["1eXfppESsJSOv-kN3413hTFYSWdJluJjd",600,397],["1sQc-YxkuLhrePLZJ1b33MgWlg-8l5Neh",600,450],["1l30xOXuyGVU9EsSqQ4cocZu2aVl9nrXx",600,397],["1H_eBvr9dQdSzUQlOEl-4iYaFu2uSKTgB",600,397],["1GM58KBA9784fGKt2RfHthjyS-OBP_OPs",460,460],["1XePhEZcVyHlz-9a1v26MmIjW8DgSP9kT",600,397],["1U6FafLaGtTrf4b2clX1lC58OeoO-T020",600,397],["1pM_c8JD0N3MzbR4xS4c-9OUKGzbVrHVG",600,397],["1waGj_eNW1o3BG_z-ozwPkuzQtx0GAu3N",345,460],["1cSbiPkEKUYrDCN1F0Aw9gbUqnq05_-Pj",600,450],["1vN38Hnxk0erwZPI5rUtEKhaX3gtH15uz",600,450],["1toHd5pBSFhv0FKeb-zFY_eDkLg8wWAyq",600,400],["13IT0qZUxaqCYWRZhiIudXZ6DVN9ymFuP",600,450],["1WI01o9NM3p7cWUWhUKm775i7vDFpR4Tg",345,460],["1hyuiaBSq8ULANDyDMkgrvcnaKfqM8-En",345,460],["1vN7R8XQGttZWnAJEjiYX6vwDaeIGPh1X",600,326],["1VQCMNNmxXLc5L_wI9WaTxYQBwU6z2HIO",600,397],["1w8kOyLMuW7Zw7JWEtK9ac269LU0DXJBT",460,460],["1YrzcSSESZE4HL-mGnrApiRov3aIAdkDT",600,450],["1V-LBMcT3hWzNSK67cY01IKo9kiYu9Lwd",600,397],["1l4hN3dQIltTBe1HWashicsuPhXaHo-YH",345,460],["1Y7PXc_YRT-r9fJxtatF_TDN8RiVBgtvV",600,450],["1gZ5Pl-XhMVgZMkLy777Wcacqzg77sYXd",600,397],["1bckR29ITxYjSgQEDHJGGccG1AU68efyD",345,460],["1NSbRdFVKG6LwDX69CAZdIDIhdssYzGf6",600,397],["1qDW9-eLvGKJVf_VajPQX3XQ4ApVf2o5U",600,450],["1MzyGDl9CEMeFI1nigSXhHE2m-tEzor6r",345,460],["1mWtenzkba00MypdCfonLE4d_6kHH6kki",600,397],["1vvRNZbeslK49FslzzH3WCRkIfXZopM2o",600,450],["1tIGF88HSI7dNpAkiJsL-jzzku56pKV2Y",600,450],["1HYg5RIfMFLb7tkWQpzi-CxdkxX-nzwnZ",600,450],["1dH-VxmJFHOf9fm2dkvWfEdzlEsCkguR7",600,450],["19aSCv0jswCuMr7AFy1uw_LzAZ_6JzPo7",345,460],["1XVhvB-vuHS9rwddn5T8b77wLvP7BenFv",345,460],["1R-zZ0w_E0nMb3-cLSt73nuuI6glDBlp6",600,450],["1hH3zLyONcMQPJci5-blcuhEdmkgB2eVx",345,460],["1TavHa1TuN39o_X9ZzLtv09HzHajWNowH",600,450],["1YEE9lMQbKrzwtj8gu43zyq1zS4Ckybdb",600,397],["1Fc83Iw4rDVNxW5E_WYTJXf9dD16-Cift",600,397],["1i7bsfSrXp-KWEl_CKtitXTVF3U_CP9ug",600,450],["1LOOMAQCZUxEZPMPdnSnMHmtFMnlGD9sp",345,460],["1VvqTmdqyKasDQz8yRLWi9UXBrwjQJ-15",345,460],["1lDYFRFlU3dese46Nyf3u8r87nM25tDgJ",345,460],["1OVAqUQaAX_aD6qBKRogZWx-jKi0yasGF",600,450],["1cgMfXnfgFHGuZrxNRiZ0J2u8vcd7J0ZY",309,460],["1P3h2SWi6gTTWYJ8-yRfox97--qpHIJlC",600,400],["1QndiLDaEZCRFR52noROyN6Av2b-WWxXv",600,450],["1sErW5tNC9r19FgP5ohLYazSgPVWWNQjS",460,460],["1ZbgRrpFgRanQHRe-kEpHP8hSfxJSNQQR",600,399],["1eJi6Y5_9XTQhFzJbIyQmig_jNOAtCzsh",600,450],["1Q2lWxENDWD289gmvUldUSB0hVPZfr3qb",600,450],["11Ox_DDaA2xf7fkZsJ0cW59ahAmXVHbsw",345,460],["11NH_cSOCj5IwMuR6Fb1xKpFEwCF9DQ0-",460,460],["1y3YRgL0_ML-v4wefn9tbJ6Kb1lvpOWnD",600,450],["1UuKoc8W-3ktGRSLmhMP0vOb__boInIys",460,460],["1sTBWExlm-gf82As7WxRViF5bMz3x2PP3",600,450],["1Q9kg8W91OXK8M6p2quoIqzPhfIiIP18R",460,460],["1JdONx2_zbTcN3QD2kvmyofRd7GEQ1jEj",460,460],["16cqegO1POwNYvScGfAISx2ltj3a_PHWg",345,460],["18AFPE7dd7emIo4QtO37RXWJaKCJ1dd5Q",600,450],["1ce1_FkBoXmjEll3pzIjC__fLvAn3YlN2",600,450],["1szc87wWbdTFd8OaOz6mzIaPCqwVXXkN-",460,460],["1OGzI0vxOArtkl2GzV70HL0akzuWF1IJf",600,450],["19Wc5Rb0DPVlydCTW8xB1sp6QBdC1RQhW",600,450],["1wnBELfHMvdinkca3LVayc3hBZwG5ND-P",345,460],["1Z-Vnhzwr1vKxxz5E1gZgTI7uzEVxvE6b",600,450],["18_QBHbaX9qEjFVxV0rEzgEbHUYw5tuKN",600,450],["1_TsqL_aB-RpGKa3ww7Rlo8BZg5PdHrT0",600,450],["1gCChH0HRarGk1ocHPQL3Aq2hQWPiKizV",345,460],["1Kr54VDSfLTyVcFCgle1VXUUIp7rzdY0m",460,460],["1fluCgEuqIx4ruaeWds9dZvszocpOtQqg",460,460],["1QfVEfoaGx7-RlJM1s7naS_OKZ8C4quHk",345,460],["1LC544b5x7uaD_Snn0dbVlny4if2vFoFm",460,460],["1c5vFFZTJV8Q2YqhW4BZTBB1WwIfrYluR",345,460],["16-_G55tPiy7FJrvwZloBafimHiensWjO",460,460],["1TTlOtYIGTGfDc7ojn-EP3tM49h5WeKUq",460,460],["1ofd5t-goEBEcC4Ul6v3HatkJAG60I3xC",600,450],["1JRnDrqvb7bxw4rod2MoS6Prxu_UKu4BH",600,450],["1dZsaPNghGAgqN5gk5QzyYmgdxub2ExCA",345,460],["1MvtEHVjj9SJOR6FmN_p7VOLUHo_fpUAQ",600,450],["1J5RVzJjot9bGIQrjkfBr8SonWkA6alaN",600,398],["1e2J4b-wBFHsu3wzNPgLtXohU2Gs9QjJm",600,450],["1cBccV0Xz3hba9CAa6OioVyBz3ya73s0j",345,460],["17jW5b1b5692g4-0ZH3U4Jswxx0K7oir7",600,450],["1V2-_fU99YtqLqTJpLylAFsdozLeI6ctS",600,450],["1-Cn-SxPCQrnhB9vuL-KCRdjk4pBQs2A4",345,460],["1J_uwQAZTdAsk8dRJS97VhH3PJ8QTweYU",345,460],["1sTFm5fB7j3bm329N-tCSzXKtqE6ow3PG",345,460],["10gxHm3Aofy0rDCa2ILEU88eqmoevF8iB",345,460],["1DB0VJbmmwcBA9c38tEcDSoJeuv3oz-S4",600,450],["1qj_E00LVtlCp3vqfH1U9JzbVnL7rseRK",600,450],["1KrkW-OcmOUGZGZbshg0MlH9M7PsWt7sO",600,450],["1mGqgb6H1sDyLhBE624QFAwgIW6qfWRCv",345,460],["1p2JmwNXwNNsmCaDUSYZBlDKO9H96L9OD",600,400],["1m3LjDQM_HHklIuBvXX_ArLyQFygdhGSr",345,460],["1oogFdjHNaQNdh2ZJLkS1yCXWmqen0lpJ",460,460],["1GpYMEzHArleLHY9GXwRSKdZwW1-6WgZZ",600,450],["1JVTfDE8IRWfowDb0gQEIJzUkfSy4lyl5",345,460],["1DWA1raM05X6sI3ul9KWy1G-k3m6fDS05",570,460],["14zMxFvNppVlRxcify5rT1bf8ka-NAQw3",600,450],["177DU1yJEfum1YPi88rqFBWPAmn6v68eF",600,450],["1o1l3kO3O7xOAGdY6chaxaHVeMkLCrTDN",600,450],["1NCXPzK1hCtCVIYferZBqEyOiTXXzUGMZ",600,450],["1pHRcuP3uEPsctuydYWWkyex9JrgHeLrx",600,450],["14t5A7DJ-jF6rcGWystoLoghMImjHhhBX",460,460],["1t38qJLCHefu0OQ1AkpAhRM7rdltVFSPa",345,460]]</script></section>
 
   <section data-reveal="1" id="founders" style="background:#fff">
     <div style="max-width:1600px;margin:0 auto;padding:114px 48px 106px">
@@ -1031,11 +1028,14 @@ html { scroll-behavior: smooth; }
   // 写真の選び方は毎回変える。見るたびに違う顔ぶれが流れたほうが、
   // 自分が写っている一枚に当たる機会が増える。
   // 上下で同じ写真が出ないよう、シャッフルした列を前半・後半で分ける。
+  //
+  // 動かすのはスクロール位置。CSSアニメーションで transform を動かすと
+  // 指で触れないので、自動で流すのも人が送るのも同じ「スクロール」に寄せた。
   (function () {
-    var P = window.__BBP, bands = document.querySelectorAll('.mq');
+    var P = window.__BBP, bands = [].slice.call(document.querySelectorAll('.mq'));
     if (!P || !P.length || !bands.length) return;
     var PER = 26;                      // 1本あたりの枚数
-    var SPEED = 30;                    // 1秒あたりに流れる px
+    var SPEED = 42;                    // 1秒あたりに流れる px
 
     var pool = P.slice();
     for (var i = pool.length - 1; i > 0; i--) {      // Fisher-Yates
@@ -1044,17 +1044,17 @@ html { scroll-behavior: smooth; }
     }
     var half = Math.floor(pool.length / 2);
     var sets = [pool.slice(0, half), pool.slice(half)];
+    var reduce = window.matchMedia
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    var live = [];
     bands.forEach(function (band, bi) {
-      var set = sets[bi % 2];
-      var take = set.slice(0, Math.min(PER, set.length));
+      var take = sets[bi % 2].slice(0, Math.min(PER, sets[bi % 2].length));
       if (!take.length) return;
 
       var row = document.createElement('div');
       row.className = 'mq-row';
-      var h = parseFloat(getComputedStyle(band).getPropertyValue('--h')) || 0;
-
-      // 中身を2周ぶん置く。-50% ずらすと1周ぶん動いて元に戻り、継ぎ目が出ない
+      // 中身を2周ぶん置く。端まで来たら半分戻せば、継ぎ目なく回り続ける
       for (var pass = 0; pass < 2; pass++) {
         take.forEach(function (p) {
           var im = document.createElement('img');
@@ -1066,11 +1066,78 @@ html { scroll-behavior: smooth; }
       }
       band.appendChild(row);
 
-      // 実寸から尺を決める。幅が違う行でも流れる速さを揃えるため
+      var st = { el: band, row: row, dir: band.getAttribute('data-dir') === 'right' ? -1 : 1,
+                 half: 0, pos: 0, hold: 0, drag: false, x0: 0, s0: 0, seen: true };
+      live.push(st);
+
+      // 折り返しに当たらない位置から始める（右へ流す側は減らしていくので後ろから）
       requestAnimationFrame(function () {
-        var w = row.scrollWidth / 2;
-        if (w > 0) band.style.setProperty('--dur', Math.round(w / SPEED) + 's');
+        st.half = row.scrollWidth / 2;
+        st.pos = st.dir < 0 ? st.half - 1 : 1;
+        band.scrollLeft = st.pos;
       });
+
+      // --- 人が触っているあいだは止める ---
+      function hold() { st.hold = 1400; }                 // 手を離してから待つms
+      band.addEventListener('wheel', hold, { passive: true });
+      band.addEventListener('touchstart', hold, { passive: true });
+      band.addEventListener('touchmove', hold, { passive: true });
+
+      // --- マウスでのドラッグ（指のスワイプは標準のスクロールで動く） ---
+      band.addEventListener('pointerdown', function (e) {
+        if (e.pointerType !== 'mouse') return;
+        st.drag = true; st.x0 = e.clientX; st.s0 = band.scrollLeft;
+        band.classList.add('is-drag');
+        try { band.setPointerCapture(e.pointerId); } catch (err) {}
+        hold(); e.preventDefault();
+      });
+      band.addEventListener('pointermove', function (e) {
+        if (!st.drag) return;
+        band.scrollLeft = st.s0 - (e.clientX - st.x0);
+        hold();
+      });
+      ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (ev) {
+        band.addEventListener(ev, function () {
+          if (!st.drag) return;
+          st.drag = false; band.classList.remove('is-drag'); hold();
+        });
+      });
+    });
+
+    // 画面の外にあるあいだは動かさない（無駄に回さない）
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          live.forEach(function (st) { if (st.el === e.target) st.seen = e.isIntersecting; });
+        });
+      }, { rootMargin: '100px 0px' });
+      live.forEach(function (st) { io.observe(st.el); });
+    }
+
+    var prev = 0;
+    requestAnimationFrame(function step(now) {
+      var dt = prev ? Math.min(now - prev, 50) : 0;   // タブ復帰時に飛ばさない
+      prev = now;
+      live.forEach(function (st) {
+        if (!st.half) { st.half = st.row.scrollWidth / 2; return; }
+        if (st.hold > 0) {
+          st.hold -= dt;
+          st.pos = st.el.scrollLeft;        // 人が動かしたぶんを引き継ぐ
+        } else if (!reduce && st.seen && dt) {
+          // 位置は小数で持つ。scrollLeft に直接足すと代入のたびに丸められ、
+          // 1フレームぶんの 0.7px が消えてほとんど進まない。
+          st.pos += st.dir * SPEED * dt / 1000;
+        } else {
+          return;
+        }
+        // 端に来たら半周ぶんずらす。2周ぶん並べてあるので見た目は変わらない。
+        // 送り先は区間の内側に置く。0 と half は同じ絵なので、端ちょうどへ
+        // 送ると毎フレーム両端を往復してその場で止まる。
+        if (st.pos >= st.half) st.pos = 1;
+        else if (st.pos <= 0) st.pos = st.half - 2;
+        st.el.scrollLeft = st.pos;
+      });
+      requestAnimationFrame(step);
     });
   })();
 
