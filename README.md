@@ -12,6 +12,7 @@
 | `index.html` | 写真・ロゴを埋め込んだ単体ページ |
 | `ogp-v3.png` | LINE / X 共有時のサムネイル（1200x630）。作り直したらファイル名を変える（SNSはURL単位でキャッシュするため） |
 | `ogp.png` / `ogp-v2.png` | 旧サムネイル。すでに共有されたリンクのために残してある |
+| `sponsor/index.html` | 協賛のご案内（https://bb30th.jp/sponsor/）。トップからはリンクしない。build.py の対象外なので直接編集する |
 | `CNAME` | 独自ドメインの指定（GitHub Pages が読む） |
 | `.nojekyll` | GitHub Pages の前処理を無効化 |
 
