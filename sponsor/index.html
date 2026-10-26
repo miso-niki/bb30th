@@ -48,6 +48,7 @@
   .hero .sub { margin: 16px 0 0; font: 500 13px/1.6 var(--sans); letter-spacing: .14em; color: var(--sub); }
   .nb { display: inline-block; }
   .intro { margin: 18px 0 0; max-width: 680px; color: var(--sub); font-size: 14.5px; line-height: 2; }
+  .lead-2 { margin-top: 20px !important; }
   .lead { margin: 36px 0 0; max-width: 680px; color: var(--sub); font-size: 15.5px; line-height: 2.1; }
 
   .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line);
@@ -92,7 +93,8 @@
   .card ul { list-style: none; margin: 14px 0 0; padding: 0; }
   .card li { display: flex; justify-content: space-between; gap: 16px; padding: 7px 0; font-size: 13.5px; }
   .card li span:first-child { color: var(--sub); }
-  .card li span:last-child { text-align: right; font-weight: 500; }
+  .card li span:first-child { flex: 1; min-width: 0; }
+  .card li span:last-child { text-align: right; font-weight: 500; white-space: nowrap; }
 
   /* 補足 */
   .defs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
@@ -108,6 +110,8 @@
   .deadline div { background: var(--soft); padding: 22px 24px; }
   .deadline dt { font-size: 12px; letter-spacing: .1em; color: var(--sub); }
   .deadline dd { margin: 6px 0 0; font: 600 20px/1.4 var(--serif); }
+  .deadline dd.dd-note { margin-top: 8px; font: 400 13px/1.6 var(--sans); color: var(--sub); }
+  .sub-h { margin: 36px 0 8px; font: 600 16px/1.6 var(--serif); letter-spacing: .04em; }
   .deadline dd small { font: 400 13px/1 var(--sans); color: var(--sub); margin-left: 6px; }
 
   .use p { margin: 0; max-width: 720px; }
@@ -154,10 +158,14 @@
     <h1><span class="nb">30周年を、</span><span class="nb">一緒に盛り上げませんか？</span></h1>
     <p class="sub">創業30周年記念 大同窓会　協賛のご案内</p>
     <p class="lead">
-      2027年、ビジネスバンクは創業30周年を迎えます。<br>
-      この節目に、かつて一緒に働いた仲間が久しぶりに青山に集まります。<br>
-      当日は、浜口さんにこれまでの感謝を伝えて、集まったみんなにとって思い出に残る一日にしたいと思っています。<br>
-      その準備を、協賛という形で一緒に支えてもらえたら嬉しいです。
+      ビジネスバンクは、2027年に創業30周年を迎えます。<br>
+      この節目に、かつてビジネスバンクで働いていた仲間たちが集まる大同窓会を開催します。<br>
+      久しぶりの再会を楽しみながら、浜口さんへの感謝も伝えられる一日にしたいと思っています。
+    </p>
+    <p class="lead lead-2">
+      そこで今回、この会を一緒に盛り上げてくださるスポンサーを募集することにしました。<br>
+      ご協賛いただいた皆さんのお名前や会社は、当日の会場や記念パンフレットでご紹介します。<br>
+      ご無理のない範囲で、ご協力いただけたら嬉しいです。
     </p>
     <dl class="facts">
       <div><dt>DATE</dt><dd>2027年2月7日（日）<br>14:00〜17:00</dd></div>
@@ -171,8 +179,8 @@
     <div class="wrap">
       <div class="sec-head">
         <span class="sec-en">PLANS</span>
-        <h2>協賛のプラン</h2>
-        <p class="intro">会社としての協賛と、個人での応援を用意しました。会場やパンフレットには、会社での協賛なら社名とお名前を、個人での応援ならお名前を載せます。今の仕事を、昔の仲間に知ってもらうきっかけにもなればと思っています。</p>
+        <h2>協賛プラン</h2>
+        <p class="intro">法人向けのプランはS・A・B・Cの4つです。個人での協賛も受け付けています。</p>
       </div>
 
       <table class="menu">
@@ -187,12 +195,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr><th>会場での社名・ロゴの掲示</th><td class="s">特大<br>社名＋お名前</td><td>大<br>社名＋お名前</td><td>中<br>社名＋お名前</td><td>小<br>社名＋お名前</td><td>お名前</td></tr>
-          <tr><th>記念パンフレットへの掲載</th><td class="s">特大<br>社名＋お名前</td><td>大<br>社名＋お名前</td><td>中<br>社名＋お名前</td><td>小<br>社名＋お名前</td><td>お名前</td></tr>
-          <tr><th>司会による読み上げ</th><td class="s">個別</td><td>個別</td><td>個別</td><td>一括</td><td>一括</td></tr>
-          <tr><th>浜口さんへの記念品に名入れ</th><td class="s">お名前</td><td>お名前</td><td>お名前</td><td>お名前</td><td class="no">—</td></tr>
-          <tr><th>記念Tシャツへの名入れ</th><td class="s">背面</td><td>背面</td><td>背面</td><td>背面</td><td class="no">—</td></tr>
-          <tr><th>商品の紹介・サンプル配布</th><td class="s"><span class="yes">○</span></td><td><span class="yes">○</span></td><td><span class="yes">○</span></td><td class="no">—</td><td class="no">—</td></tr>
+          <tr><th>会場での会社名・ロゴのご紹介</th><td class="s">特大<br>社名＋お名前</td><td>大<br>社名＋お名前</td><td>中<br>社名＋お名前</td><td>小<br>社名＋お名前</td><td>お名前</td></tr>
+          <tr><th>記念パンフレットへの会社名・ロゴ掲載</th><td class="s">特大<br>社名＋お名前</td><td>大<br>社名＋お名前</td><td>中<br>社名＋お名前</td><td>小<br>社名＋お名前</td><td>お名前</td></tr>
+          <tr><th>司会からのご紹介</th><td class="s">個別</td><td>個別</td><td>個別</td><td>一括</td><td>一括</td></tr>
+          <tr><th>浜口さんへの記念品にお名前を掲載</th><td class="s">お名前</td><td>お名前</td><td>お名前</td><td>お名前</td><td class="no">—</td></tr>
+          <tr><th>記念Tシャツへのお名前の掲載</th><td class="s">背面</td><td>背面</td><td>背面</td><td>背面</td><td class="no">—</td></tr>
+          <tr><th>商品・サービスの紹介、サンプル配布</th><td class="s"><span class="yes">○</span></td><td><span class="yes">○</span></td><td><span class="yes">○</span></td><td class="no">—</td><td class="no">—</td></tr>
           <tr><th>ステージでのご紹介</th><td class="s"><span class="yes">○</span></td><td><span class="yes">○</span></td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
           <tr><th>二次会スポンサーとしてご紹介</th><td class="s"><span class="yes">○</span><span class="tag">調整中</span></td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
         </tbody>
@@ -202,12 +210,12 @@
         <div class="card s">
           <div class="card-head"><div><span class="rank">S</span><span class="kind">法人</span></div><div class="price">100万円以上</div></div>
           <ul>
-            <li><span>会場での掲示</span><span>特大（社名＋お名前）</span></li>
-            <li><span>記念パンフレット</span><span>特大（社名＋お名前）</span></li>
-            <li><span>司会による読み上げ</span><span>個別</span></li>
-            <li><span>記念品への名入れ</span><span>お名前</span></li>
-            <li><span>記念Tシャツ</span><span>背面</span></li>
-            <li><span>商品紹介・サンプル配布</span><span>○</span></li>
+            <li><span>会場での会社名・ロゴのご紹介</span><span>特大（社名＋お名前）</span></li>
+            <li><span>記念パンフレットへの会社名・ロゴ掲載</span><span>特大（社名＋お名前）</span></li>
+            <li><span>司会からのご紹介</span><span>個別</span></li>
+            <li><span>浜口さんへの記念品にお名前を掲載</span><span>お名前</span></li>
+            <li><span>記念Tシャツへのお名前の掲載</span><span>背面</span></li>
+            <li><span>商品・サービスの紹介、サンプル配布</span><span>○</span></li>
             <li><span>ステージでのご紹介</span><span>○</span></li>
             <li><span>二次会スポンサー</span><span>○（調整中）</span></li>
           </ul>
@@ -215,42 +223,42 @@
         <div class="card">
           <div class="card-head"><div><span class="rank">A</span><span class="kind">法人</span></div><div class="price">30万円</div></div>
           <ul>
-            <li><span>会場での掲示</span><span>大（社名＋お名前）</span></li>
-            <li><span>記念パンフレット</span><span>大（社名＋お名前）</span></li>
-            <li><span>司会による読み上げ</span><span>個別</span></li>
-            <li><span>記念品への名入れ</span><span>お名前</span></li>
-            <li><span>記念Tシャツ</span><span>背面</span></li>
-            <li><span>商品紹介・サンプル配布</span><span>○</span></li>
+            <li><span>会場での会社名・ロゴのご紹介</span><span>大（社名＋お名前）</span></li>
+            <li><span>記念パンフレットへの会社名・ロゴ掲載</span><span>大（社名＋お名前）</span></li>
+            <li><span>司会からのご紹介</span><span>個別</span></li>
+            <li><span>浜口さんへの記念品にお名前を掲載</span><span>お名前</span></li>
+            <li><span>記念Tシャツへのお名前の掲載</span><span>背面</span></li>
+            <li><span>商品・サービスの紹介、サンプル配布</span><span>○</span></li>
             <li><span>ステージでのご紹介</span><span>○</span></li>
           </ul>
         </div>
         <div class="card">
           <div class="card-head"><div><span class="rank">B</span><span class="kind">法人</span></div><div class="price">10万円</div></div>
           <ul>
-            <li><span>会場での掲示</span><span>中（社名＋お名前）</span></li>
-            <li><span>記念パンフレット</span><span>中（社名＋お名前）</span></li>
-            <li><span>司会による読み上げ</span><span>個別</span></li>
-            <li><span>記念品への名入れ</span><span>お名前</span></li>
-            <li><span>記念Tシャツ</span><span>背面</span></li>
-            <li><span>商品紹介・サンプル配布</span><span>○</span></li>
+            <li><span>会場での会社名・ロゴのご紹介</span><span>中（社名＋お名前）</span></li>
+            <li><span>記念パンフレットへの会社名・ロゴ掲載</span><span>中（社名＋お名前）</span></li>
+            <li><span>司会からのご紹介</span><span>個別</span></li>
+            <li><span>浜口さんへの記念品にお名前を掲載</span><span>お名前</span></li>
+            <li><span>記念Tシャツへのお名前の掲載</span><span>背面</span></li>
+            <li><span>商品・サービスの紹介、サンプル配布</span><span>○</span></li>
           </ul>
         </div>
         <div class="card">
           <div class="card-head"><div><span class="rank">C</span><span class="kind">法人</span></div><div class="price">7万円</div></div>
           <ul>
-            <li><span>会場での掲示</span><span>小（社名＋お名前）</span></li>
-            <li><span>記念パンフレット</span><span>小（社名＋お名前）</span></li>
-            <li><span>司会による読み上げ</span><span>一括</span></li>
-            <li><span>記念品への名入れ</span><span>お名前</span></li>
-            <li><span>記念Tシャツ</span><span>背面</span></li>
+            <li><span>会場での会社名・ロゴのご紹介</span><span>小（社名＋お名前）</span></li>
+            <li><span>記念パンフレットへの会社名・ロゴ掲載</span><span>小（社名＋お名前）</span></li>
+            <li><span>司会からのご紹介</span><span>一括</span></li>
+            <li><span>浜口さんへの記念品にお名前を掲載</span><span>お名前</span></li>
+            <li><span>記念Tシャツへのお名前の掲載</span><span>背面</span></li>
           </ul>
         </div>
         <div class="card">
           <div class="card-head"><div><span class="rank">—</span><span class="kind">個人</span></div><div class="price">お気持ち</div></div>
           <ul>
-            <li><span>会場での掲示</span><span>お名前</span></li>
-            <li><span>記念パンフレット</span><span>お名前</span></li>
-            <li><span>司会による読み上げ</span><span>一括</span></li>
+            <li><span>会場でのご紹介</span><span>お名前</span></li>
+            <li><span>記念パンフレットへの掲載</span><span>お名前</span></li>
+            <li><span>司会からのご紹介</span><span>一括</span></li>
           </ul>
         </div>
         <p class="note">金額はすべて税込です。</p>
@@ -262,15 +270,15 @@
     <div class="wrap">
       <div class="sec-head">
         <span class="sec-en">DETAILS</span>
-        <h2>プランの内容</h2>
+        <h2>協賛特典のご案内</h2>
       </div>
       <dl class="defs">
-        <div><dt>社名とお名前の掲示</dt><dd>会社名・ロゴに、ビジネスバンクにいた方のお名前を添えて掲示します。「あの人が、今はこの会社をやっているんだ」と、昔の仲間に伝わるようにしたいと思っています。</dd></div>
-        <div><dt>記念パンフレット</dt><dd>参加者全員に配る記念パンフレット（制作予定）に載せます。</dd></div>
-        <div><dt>浜口さんへの記念品</dt><dd>OB・OG一同から浜口さんに贈る記念品に、協賛いただいた方のお名前を入れます。</dd></div>
-        <div><dt>記念Tシャツ</dt><dd>参加者全員に配る記念Tシャツの背面に入れます。</dd></div>
-        <div><dt>商品の紹介・サンプル配布</dt><dd>会場に展示スペースを用意します。商品やサービスの紹介、サンプルやノベルティの配布に使ってください。</dd></div>
-        <div><dt>ステージでのご紹介</dt><dd>当日、ステージで紹介する時間をつくります。進行の都合があるので、時間は事前に相談させてください。</dd></div>
+        <div><dt>会社名・お名前のご紹介</dt><dd>会場には、ご協賛いただいた会社のロゴと、ビジネスバンクに在籍されていた方のお名前を掲出します。久しぶりに会う仲間たちに、今のお仕事や会社を知ってもらうきっかけになればと思っています。</dd></div>
+        <div><dt>記念パンフレット</dt><dd>当日、参加者の皆さんにお配りする記念パンフレットにも、会社名やお名前を掲載します。</dd></div>
+        <div><dt>浜口さんへの記念品</dt><dd>30周年のお祝いとして、OB・OG一同から浜口さんに記念品を贈る予定です。記念品には、協賛してくださった方のお名前も入れます。</dd></div>
+        <div><dt>記念Tシャツ</dt><dd>参加者の皆さんにお配りする記念Tシャツの背面に、お名前を掲載します。</dd></div>
+        <div><dt>商品・サービスのご紹介</dt><dd>会場内に、商品やサービスをご紹介いただけるスペースを用意します。商品の展示や、サンプル・ノベルティの配布などにご活用ください。</dd></div>
+        <div><dt>ステージでのご紹介</dt><dd>S・Aプランの協賛企業は、当日のステージでもご紹介します。紹介の方法や時間は、事前にご相談させてください。</dd></div>
       </dl>
     </div>
   </section>
@@ -281,7 +289,7 @@
         <span class="sec-en">USE OF FUNDS</span>
         <h2>協賛金の使いみち</h2>
       </div>
-      <p>いただいた協賛金は、主に浜口さんへの記念品と、会場・当日の運営に使います。</p>
+      <p>皆さんからいただいた協賛金は、浜口さんへの記念品や、当日の会場費・運営費などに使わせていただきます。</p>
     </div>
   </section>
 
@@ -290,20 +298,24 @@
       <div class="sec-head">
         <span class="sec-en">HOW TO APPLY</span>
         <h2>お申し込みの流れ</h2>
+        <p class="intro">協賛をご希望の方は、以下の流れでお申し込みください。</p>
       </div>
       <ol class="steps">
-        <li>実行委員会の新田までご連絡ください。相談したいことがあれば、打ち合わせを設定します。</li>
-        <li>実行委員会から請求書を送ります。</li>
-        <li>指定の口座へお振り込みください。</li>
-        <li>掲示用のロゴデータと、載せるお名前を送ってください。</li>
+        <li>まずは実行委員会の新田までご連絡ください。プランや金額についてのご相談も歓迎です。</li>
+        <li>お申し込み内容を確認後、請求書をお送りします。</li>
+        <li>請求書に記載された口座へお振り込みをお願いします。</li>
+        <li>会社のロゴデータや、掲載をご希望のお名前をお送りください。個人での協賛の場合は、お名前だけで大丈夫です。</li>
       </ol>
       <dl class="deadline">
-        <div><dt>お申し込み・ご入金</dt><dd>2026年11月30日<small>（月）まで</small></dd></div>
+        <div><dt>お申し込み・ご入金の目安</dt><dd>お申し込み：2026年11月末<small>まで</small></dd><dd class="dd-note">お支払いのタイミングはご相談ください</dd></div>
       </dl>
       <p class="note" style="margin-top:18px">
-        記念品・記念Tシャツ・パンフレットは制作に時間がかかるため、名入れと掲載は期限までに申し込んでいただいた分が対象です。<br>
-        請求書は「株式会社ビジネスバンク 創業30周年記念 大同窓会 実行委員会」の名義で、プランの内容を書いて発行します。
-        実行委員会は適格請求書発行事業者ではないため、登録番号は入りません。
+        記念品やTシャツ、パンフレットの制作準備があるため、お名前やロゴの掲載をご希望の場合は、上記を目安にお申し込みください。
+      </p>
+      <h3 class="sub-h">請求書について</h3>
+      <p class="note">
+        請求書は「株式会社ビジネスバンク 創業30周年記念 大同窓会 実行委員会」名義で発行します。<br>
+        なお、実行委員会は適格請求書発行事業者ではないため、インボイス登録番号の記載はありません。
       </p>
     </div>
   </section>
@@ -311,8 +323,8 @@
   <section class="contact">
     <div class="wrap">
       <span class="sec-en">CONTACT</span>
-      <h2>まずは気軽にご連絡ください</h2>
-      <p>実行委員会 幹事長の新田慶秋まで、直接ご連絡ください。<br>どのプランにするか迷っている、金額を相談したい、という段階でも大丈夫です。</p>
+      <h2>お申し込み・ご相談</h2>
+      <p>ご協賛いただける方は、実行委員会の新田まで直接ご連絡ください。<br>「こんな形でも協賛できる？」といったご相談も大歓迎です。<br>30周年の大同窓会を、皆さんと一緒に盛り上げられたら嬉しいです！</p>
       <a class="btn" href="https://bb30th.jp/">大同窓会の案内ページを見る <span>→</span></a>
     </div>
   </section>
