@@ -120,6 +120,14 @@
   .sub-h { margin: 36px 0 8px; font: 600 16px/1.6 var(--serif); letter-spacing: .04em; }
   .deadline dd small { font: 400 13px/1 var(--sans); color: var(--sub); margin-left: 6px; }
 
+  .faq { background: var(--paper); border: 1px solid var(--line); padding: 24px 26px; max-width: 760px; }
+  .faq-q { margin: 0; font: 600 15px/1.7 var(--serif); letter-spacing: .03em; }
+  .faq-q::before { content: "Q."; color: var(--accent); margin-right: 8px; font-family: var(--latin); font-size: 18px; }
+  .faq-a { margin-top: 10px; color: var(--sub); font-size: 13.5px; line-height: 1.95; }
+  .faq-a p { margin: 0 0 10px; }
+  .faq-a ul { list-style: none; margin: 4px 0 14px; padding: 0; max-width: 420px; border-top: 1px solid var(--line); }
+  .faq-a li { display: flex; justify-content: space-between; gap: 16px; padding: 7px 2px; border-bottom: 1px solid var(--line); }
+  .faq-a li span:last-child { color: var(--ink); font-weight: 500; white-space: nowrap; }
   .use p { margin: 0; max-width: 720px; }
   .use p + p { margin-top: 14px; }
 
@@ -146,6 +154,7 @@
     .defs, .deadline { grid-template-columns: 1fr; }
     .steps { grid-template-columns: 1fr; }
     .facts div { padding: 18px 16px; }
+    .faq { padding: 20px 18px; }
   }
 </style>
 </head>
@@ -324,6 +333,21 @@
         請求書は「株式会社ビジネスバンク 創業30周年記念 大同窓会 実行委員会」名義で発行します。<br>
         なお、実行委員会は適格請求書発行事業者ではないため、インボイス登録番号の記載はありません。
       </p>
+      <h3 class="sub-h">よくある質問</h3>
+      <div class="faq">
+        <p class="faq-q">インボイスがないと、会社側にどんな影響がありますか？</p>
+        <div class="faq-a">
+          <p>実行委員会は大同窓会のための任意団体で、インボイス発行事業者の登録をしていないため、インボイスは発行できません。協賛金には消費税を上乗せしていません。</p>
+          <p>御社が消費税の原則課税の場合、仕入税額控除は経過措置により一部となります。今回の大同窓会では、帳簿と請求書を保存するなどの要件を満たせば、消費税相当額の70%が控除の対象です。控除できない消費税相当額の目安は次のとおりです。協賛金の全額が税率10%の課税仕入れとなる場合の概算です。</p>
+          <ul>
+            <li><span>Sプラン（100万円の場合）</span><span>約2万7千円</span></li>
+            <li><span>Aプラン（30万円）</span><span>約8,200円</span></li>
+            <li><span>Bプラン（10万円）</span><span>約2,700円</span></li>
+            <li><span>Cプラン（7万円）</span><span>約1,900円</span></li>
+          </ul>
+          <p>簡易課税・免税事業者の場合は、インボイスがないことによる消費税への影響はありません。請求書には協賛の内容を記載します。経理上の扱いは、御社の経理の方にご確認ください。</p>
+        </div>
+      </div>
     </div>
   </section>
 
