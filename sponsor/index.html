@@ -76,6 +76,7 @@
   .menu .price { display: block; margin-top: 14px; font: 600 17px/1.2 var(--serif); }
   .slots { display: inline-block; margin-top: 10px; padding: 4px 9px; border: 1px solid var(--accent);
            color: var(--accent); font: 500 11px/1 var(--sans); letter-spacing: .1em; }
+  .slots.sold { background: var(--accent); color: #fff; }
   .card-head .price .slots { display: table; margin: 8px 0 0 auto; }
   .menu thead th.s { background: #FBF4F4; }
   .menu thead th.s .rank, .menu thead th.s .price { color: var(--accent); }
@@ -202,8 +203,8 @@
         <thead>
           <tr>
             <th class="row-h"><span class="note">表示の金額のほかに、消費税はいただきません</span></th>
-            <th class="s"><span class="rank">S</span><span class="kind">法人</span><span class="price">100万円以上</span></th>
-            <th><span class="rank">A</span><span class="kind">法人</span><span class="price">30万円</span><span class="slots">残り2枠</span></th>
+            <th class="s"><span class="rank">S</span><span class="kind">法人</span><span class="price">100万円以上</span><span class="slots sold">完売</span></th>
+            <th><span class="rank">A</span><span class="kind">法人</span><span class="price">30万円</span><span class="slots">残り1枠</span></th>
             <th><span class="rank">B</span><span class="kind">法人</span><span class="price">10万円</span></th>
             <th><span class="rank">C</span><span class="kind">法人</span><span class="price">5万円</span></th>
             <th><span class="rank">—</span><span class="kind">個人</span><span class="price">お気持ち</span></th>
@@ -223,7 +224,7 @@
 
       <div class="cards">
         <div class="card s">
-          <div class="card-head"><div><span class="rank">S</span><span class="kind">法人</span></div><div class="price">100万円以上</div></div>
+          <div class="card-head"><div><span class="rank">S</span><span class="kind">法人</span></div><div class="price">100万円以上<span class="slots sold">完売</span></div></div>
           <ul>
             <li><span>会場での会社名・ロゴのご紹介</span><span>特大（社名＋お名前）</span></li>
             <li><span>記念パンフレットへの会社名・ロゴ掲載</span><span>特大（社名＋お名前）</span></li>
@@ -236,7 +237,7 @@
           </ul>
         </div>
         <div class="card">
-          <div class="card-head"><div><span class="rank">A</span><span class="kind">法人</span></div><div class="price">30万円<span class="slots">残り2枠</span></div></div>
+          <div class="card-head"><div><span class="rank">A</span><span class="kind">法人</span></div><div class="price">30万円<span class="slots">残り1枠</span></div></div>
           <ul>
             <li><span>会場での会社名・ロゴのご紹介</span><span>大（社名＋お名前）</span></li>
             <li><span>記念パンフレットへの会社名・ロゴ掲載</span><span>大（社名＋お名前）</span></li>
